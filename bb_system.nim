@@ -17,14 +17,3 @@ template not_nil*[T](x: T): bool =
   ##   # Parenthesis, parenthesis everywhere.
   ##   assert(not x.is_nil)
   (not x.isNil)
-
-proc test() =
-  ## Micro test for this module.
-  var s: string
-  assert s.is_nil
-  s = ""
-  assert(not s.is_nil)
-  assert s.not_nil
-  s = nil
-
-when isMainModule: test()
