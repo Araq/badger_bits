@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Index</title>
+<title>Module bb_os</title>
 <style type="text/css">
 
 span.DecNumber {color: blue}
@@ -238,15 +238,50 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 </head>
 <body>
 <div class="document" id="documentId">
-<h1 class="title">Index</h1>
-<dt><span>dot_walk_dir_rec</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Version of os.walkDirRec which ignores items starting with a dot.…" href="bb_os.html#dot_walk_dir_rec.i,string">bb_os : dot_walk_dir_rec*(dir: string; filter = {pcFile, pcDir}): string</a></li>
-          </ul></dd>
-<dt><span>not_nil</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Negated version of `system.isNil()`.…" href="bb_system.html#not_nil.t,T">bb_system : not_nil*[T](x: T): bool</a></li>
-          </ul></dd>
+<h1 class="title">Module bb_os</h1>
+<div class="navigation" id="navigation">
+<ul class="simple">
+<li>
+  <a class="reference" href="#6" id="56">Imports</a>
+  <ul class="simple">
+    
+  </ul>
+</li>
+<li>
+  <a class="reference" href="#14" id="64">Iterators</a>
+  <ul class="simple">
+      <li><a class="reference" href="#dot_walk_dir_rec.i,string"
+    title="dot_walk_dir_rec*(dir: string; filter = {pcFile, pcDir}): string"><wbr />dot_<wbr />walk_<wbr />dir_<wbr />rec</a></li>
+
+  </ul>
+</li>
+
+</ul>
+</div>
+<div class="content" id="content">
+<p><a class="reference external" href="https://github.com/gradha/badger_bits">Badger bits</a> os helpers.</p>
+<p>Contains stuff which I would like to see in <a class="reference external" href="http://nimrod-lang.org/os.html">os</a> or is common to my code for some reason.</p>
+
+<div class="section" id="6">
+<h1><a class="toc-backref" href="#56">Imports</a></h1>
+<dl class="item">
+<a class="reference external" href="os.html">os</a>, <a class="reference external" href="strutils.html">strutils</a>
+</dl></div>
+<div class="section" id="14">
+<h1><a class="toc-backref" href="#64">Iterators</a></h1>
+<dl class="item">
+<dt id="dot_walk_dir_rec"><a name="dot_walk_dir_rec.i,string"></a><pre><span class="Keyword">iterator</span> <span class="Identifier">dot_walk_dir_rec</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">dir</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">filter</span> <span class="Other">=</span> <span class="Other">{</span><span class="Identifier">pcFile</span><span class="Other">,</span> <span class="Identifier">pcDir</span><span class="Other">}</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">{.</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">FReadDir</span><span class="Other">]</span><span class="Other">.}</span></pre></dt>
+<dd>
+<p>Version of os.walkDirRec which ignores items starting with a dot.</p>
+<p>Since a <a class="reference external" href="http://forum.nimrod-lang.org/t/514">fix</a> for <a class="reference external" href="http://nimrod-lang.org/os.html#walkDirRec">os.walkDirRec</a> won't come, this version simply ignores all directories and files starting with a dot.</p>
+
+
+</dd>
+
+</dl></div>
+
+</div>
 
 <small>Generated: 2014-08-04 23:27:28 UTC</small>
 </div>
