@@ -242,10 +242,28 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <div class="navigation" id="navigation">
 <ul class="simple">
 <li>
+  <a class="reference" href="#6" id="56">Imports</a>
+  <ul class="simple">
+    
+  </ul>
+</li>
+<li>
+  <a class="reference" href="#12" id="62">Procs</a>
+  <ul class="simple">
+      <li><a class="reference" href="#$,typedesc[T]"
+    title="`$`*[T](some: typedesc[T]): string">`<wbr />$`</a></li>
+
+  </ul>
+</li>
+<li>
   <a class="reference" href="#18" id="68">Templates</a>
   <ul class="simple">
       <li><a class="reference" href="#not_nil.t,T"
     title="not_nil*[T](x: T): bool"><wbr />not_<wbr />nil</a></li>
+  <li><a class="reference" href="#elet.t,typedesc"
+    title="elet*(t: typedesc): stmt"><wbr />elet</a></li>
+  <li><a class="reference" href="#evar.t,expr,typedesc"
+    title="evar*(x: expr; t: typedesc): stmt"><wbr />evar</a></li>
 
   </ul>
 </li>
@@ -256,6 +274,23 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <p><a class="reference external" href="https://github.com/gradha/badger_bits">Badger bits</a> system helpers.</p>
 <p>Contains stuff which I would like to see in <a class="reference external" href="http://nimrod-lang.org/system.html">system</a> or is common to my code for some reason.</p>
 
+<div class="section" id="6">
+<h1><a class="toc-backref" href="#56">Imports</a></h1>
+<dl class="item">
+<a class="reference external" href="typetraits.html">typetraits</a>
+</dl></div>
+<div class="section" id="12">
+<h1><a class="toc-backref" href="#62">Procs</a></h1>
+<dl class="item">
+<dt id="$"><a name="$,typedesc[T]"></a><pre><span class="Keyword">proc</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">some</span><span class="Other">:</span> <span class="Identifier">typedesc</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>Quick wrapper around <tt class="docutils literal"><span class="pre">typetraits.name()</span></tt>.</p>
+<p>This allows <a class="reference external" href="http://forum.nimrod-lang.org/t/430">echoing types for debugging</a>.</p>
+
+
+</dd>
+
+</dl></div>
 <div class="section" id="18">
 <h1><a class="toc-backref" href="#68">Templates</a></h1>
 <dl class="item">
@@ -270,12 +305,36 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <span class="Identifier">assert</span><span class="Punctuation">(</span><span class="Keyword">not</span> <span class="Identifier">x</span><span class="Operator">.</span><span class="Identifier">is_nil</span><span class="Punctuation">)</span></pre>
 
 </dd>
+<dt id="elet"><a name="elet.t,typedesc"></a><pre><span class="Keyword">template</span> <span class="Identifier">elet</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <span class="Identifier">typedesc</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+<p>Captures the current exception into a typed variable.</p>
+<p>The <tt class="docutils literal"><span class="pre">elet</span></tt> template injects the variable <cite>e</cite> with the type <cite>ref t</cite>. The injected <cite>e</cite> variable is guaranteed to be not nil. If the type <cite>t</cite> is not valid, the exception EInvalidObjectConversion will be raised. Usage example:</p>
+<pre><span class="Keyword">try</span><span class="Punctuation">:</span>
+  <span class="Identifier">badIO</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">except</span> <span class="Identifier">EIO</span><span class="Punctuation">:</span>
+  <span class="Identifier">elet</span> <span class="Identifier">EIO</span>
+  <span class="Identifier">echo</span> <span class="StringLit">&quot;Got bad IO: &quot;</span><span class="Punctuation">,</span> <span class="Identifier">e</span><span class="Operator">.</span><span class="Identifier">msg</span></pre>
+
+</dd>
+<dt id="evar"><a name="evar.t,expr,typedesc"></a><pre><span class="Keyword">template</span> <span class="Identifier">evar</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">expr</span><span class="Other">;</span> <span class="Identifier">t</span><span class="Other">:</span> <span class="Identifier">typedesc</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
+<dd>
+<p>Attempts to capture the current exception into a typed variable.</p>
+<p>The <tt class="docutils literal"><span class="pre">evar</span></tt> template injects the specified variable name <cite>x</cite> with the type <cite>ref t</cite>. The injected variable may be nil if there is no current exception or the type is incorrect. You can use this as a special case inside generic <tt class="docutils literal"><span class="pre">except</span></tt> branches. Example:</p>
+<pre><span class="Keyword">try</span><span class="Punctuation">:</span>
+  <span class="Identifier">badMath</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Keyword">except</span><span class="Punctuation">:</span>
+  <span class="Identifier">evar</span> <span class="Identifier">m</span><span class="Punctuation">,</span> <span class="Identifier">EArithmetic</span>
+  <span class="Identifier">evar</span> <span class="Identifier">i</span><span class="Punctuation">,</span> <span class="Identifier">EIO</span>
+  <span class="Identifier">echo</span> <span class="StringLit">&quot;auto: Is arithmetic? &quot;</span><span class="Punctuation">,</span> <span class="Punctuation">(</span><span class="Keyword">not</span> <span class="Identifier">m</span><span class="Operator">.</span><span class="Identifier">isNil</span><span class="Punctuation">)</span>
+  <span class="Identifier">echo</span> <span class="StringLit">&quot;auto: Is IO? &quot;</span><span class="Punctuation">,</span> <span class="Punctuation">(</span><span class="Keyword">not</span> <span class="Identifier">i</span><span class="Operator">.</span><span class="Identifier">isNil</span><span class="Punctuation">)</span></pre>
+
+</dd>
 
 </dl></div>
 
 </div>
 
-<small>Generated: 2014-08-04 23:27:28 UTC</small>
+<small>Generated: 2014-08-05 13:45:50 UTC</small>
 </div>
 </body>
 </html>
