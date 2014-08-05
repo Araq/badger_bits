@@ -254,6 +254,10 @@ Documents: <a href="license.html">Badger bits license</a>, <a href="README.html"
 <li><a class="reference external"
           title="Quick wrapper around ``typetraits.name()``.…" href="bb_system.html#$,typedesc[T]">bb_system : `$`*[T](some: typedesc[T]): string</a></li>
           </ul></dd>
+<dt><span>`?.`:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Safe object field accessor.…" href="bb_system.html#?..t,T,expr">bb_system : `?.`*[T](n: T; c: expr): T</a></li>
+          </ul></dd>
 <dt><span>dot_walk_dir_rec:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
           title="Version of os.walkDirRec which ignores items starting with a dot.…" href="bb_os.html#dot_walk_dir_rec.i,string">bb_os : dot_walk_dir_rec*(dir: string; filter = {pcFile, pcDir}): string</a></li>
@@ -270,8 +274,14 @@ Documents: <a href="license.html">Badger bits license</a>, <a href="README.html"
 <li><a class="reference external"
           title="Negated version of `system.isNil()`.…" href="bb_system.html#not_nil.t,T">bb_system : not_nil*[T](x: T): bool</a></li>
           </ul></dd>
+<dt><span>safe:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Returns a default safe value for any sequence if it is nil.…" href="bb_system.html#safe,seq[T]">bb_system : safe*[T](s: seq[T]): seq[T]</a></li>
+          <li><a class="reference external"
+          title="Returns a default safe value for any string if it is nil.…" href="bb_system.html#safe,string">bb_system : safe*(s: string): string</a></li>
+          </ul></dd>
 
-<small>Generated: 2014-08-05 13:45:50 UTC</small>
+<small>Generated: 2014-08-05 21:21:20 UTC</small>
 </div>
 </body>
 </html>

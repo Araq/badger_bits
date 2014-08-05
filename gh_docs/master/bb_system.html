@@ -250,7 +250,11 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <li>
   <a class="reference" href="#12" id="62">Procs</a>
   <ul class="simple">
-      <li><a class="reference" href="#$,typedesc[T]"
+      <li><a class="reference" href="#safe,string"
+    title="safe*(s: string): string"><wbr />safe</a></li>
+  <li><a class="reference" href="#safe,seq[T]"
+    title="safe*[T](s: seq[T]): seq[T]"><wbr />safe</a></li>
+  <li><a class="reference" href="#$,typedesc[T]"
     title="`$`*[T](some: typedesc[T]): string">`<wbr />$`</a></li>
 
   </ul>
@@ -260,6 +264,8 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
   <ul class="simple">
       <li><a class="reference" href="#not_nil.t,T"
     title="not_nil*[T](x: T): bool"><wbr />not_<wbr />nil</a></li>
+  <li><a class="reference" href="#?..t,T,expr"
+    title="`?.`*[T](n: T; c: expr): T">`<wbr />?.`</a></li>
   <li><a class="reference" href="#elet.t,typedesc"
     title="elet*(t: typedesc): stmt"><wbr />elet</a></li>
   <li><a class="reference" href="#evar.t,expr,typedesc"
@@ -282,6 +288,26 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <div class="section" id="12">
 <h1><a class="toc-backref" href="#62">Procs</a></h1>
 <dl class="item">
+<dt id="safe"><a name="safe,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">safe</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>Returns a default safe value for any string if it is nil.</p>
+<p>Mostly for convenience debugging and assertions, this proc will never return nil but a default empty string. Example:</p>
+<pre><span class="Keyword">proc</span> <span class="Identifier">doStuff</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">:</span> <span class="Identifier">string</span><span class="Punctuation">)</span> <span class="Operator">=</span>
+  <span class="Identifier">assert</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">safe</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">&gt;</span> <span class="DecNumber">0</span><span class="Punctuation">,</span> <span class="StringLit">&quot;You need to pass a non empty string!&quot;</span>
+<span class="Operator">...</span>
+<span class="Identifier">doStuff</span><span class="Punctuation">(</span><span class="Keyword">nil</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="safe"><a name="safe,seq[T]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">safe</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
+<dd>
+<p>Returns a default safe value for any sequence if it is nil.</p>
+<p>Mostly for convenience debugging and assertions, this proc will never return nil but a default empty sequence. Example:</p>
+<pre><span class="Keyword">proc</span> <span class="Identifier">doStuff</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">:</span> <span class="Identifier">seq</span><span class="Punctuation">[</span><span class="Identifier">string</span><span class="Punctuation">]</span><span class="Punctuation">)</span> <span class="Operator">=</span>
+  <span class="Identifier">assert</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">safe</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">&gt;</span> <span class="DecNumber">0</span><span class="Punctuation">,</span> <span class="StringLit">&quot;You need to pass a non empty sequence!&quot;</span>
+<span class="Operator">...</span>
+<span class="Identifier">doStuff</span><span class="Punctuation">(</span><span class="Keyword">nil</span><span class="Punctuation">)</span></pre>
+
+</dd>
 <dt id="$"><a name="$,typedesc[T]"></a><pre><span class="Keyword">proc</span> <span class="Other">`</span><span class="Operator">$</span><span class="Other">`</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">some</span><span class="Other">:</span> <span class="Identifier">typedesc</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>Quick wrapper around <tt class="docutils literal"><span class="pre">typetraits.name()</span></tt>.</p>
@@ -303,6 +329,13 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <span class="Comment">#assert not x.is_nil</span>
 <span class="Comment"># Parenthesis, parenthesis everywhere.</span>
 <span class="Identifier">assert</span><span class="Punctuation">(</span><span class="Keyword">not</span> <span class="Identifier">x</span><span class="Operator">.</span><span class="Identifier">is_nil</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="?."><a name="?..t,T,expr"></a><pre><span class="Keyword">template</span> <span class="Other">`</span><span class="Operator">?.</span><span class="Other">`</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">;</span> <span class="Identifier">c</span><span class="Other">:</span> <span class="Identifier">expr</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">T</span></pre></dt>
+<dd>
+<p>Safe object field accessor.</p>
+<p>This operator can be used to chain field accesses which can be handy when traversing nullable relationships. See <a class="reference external" href="http://forum.nimrod-lang.org/t/385">http://forum.nimrod-lang.org/t/385</a> for a discussion of this.</p>
+
 
 </dd>
 <dt id="elet"><a name="elet.t,typedesc"></a><pre><span class="Keyword">template</span> <span class="Identifier">elet</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <span class="Identifier">typedesc</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
@@ -334,7 +367,7 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 
 </div>
 
-<small>Generated: 2014-08-05 13:45:50 UTC</small>
+<small>Generated: 2014-08-05 21:21:20 UTC</small>
 </div>
 </body>
 </html>
