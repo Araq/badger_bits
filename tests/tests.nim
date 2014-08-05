@@ -38,9 +38,47 @@ proc test_dot_walk_dir_rec() =
   assert l != @good_result
 
 
+proc test_exceptions() =
+  proc badIO() =
+    raise newException(EIO, "Bad IO")
+
+  proc badMath() =
+    raise newException(EArithmetic, "Bad addition")
+
+  try:
+    badMath()
+  except:
+    evar m, EArithmetic
+    evar i, EIO
+    echo "auto: Is arithmetic? ", (not m.isNil)
+    echo "auto: Is IO? ", (not i.isNil)
+    assert m.not_nil
+    assert i.is_nil
+
+  try:
+    badIO()
+  except EIO:
+    elet EIO
+    echo "auto: ", type(e), " ", e.msg
+
+  try:
+    badIO()
+  except EIO:
+    evar e, EArithmetic
+    echo "auto: ", type(e)
+
+  try:
+    badIO()
+  except EIO, EArithmetic:
+    evar e, EIO
+    echo "auto: ", type(e)
+
+  echo "auto: finished"
+
 proc test() =
   test_not_nil()
   test_dot_walk_dir_rec()
+  test_exceptions()
   echo "All tests run"
 
 
