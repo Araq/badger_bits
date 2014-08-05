@@ -1,4 +1,4 @@
-import bb_system, bb_os, sequtils, algorithm
+import bb_system, bb_os, sequtils, algorithm, strutils
 
 
 proc test_not_nil() =
@@ -75,10 +75,68 @@ proc test_exceptions() =
 
   echo "auto: finished"
 
+proc test_safe_object() =
+  type Node = ref object
+    child: Node
+  var parent = Node(
+    child: Node(
+      child: Node(
+        child: nil)))
+
+  var a = parent?.child?.child
+  var b = parent?.child?.child?.child
+  var c = parent?.child?.child?.child?.child
+
+  assert a != nil
+  assert b == nil
+  assert c == nil
+
+proc test_safe_string() =
+  var
+    a: string
+    b = "something"
+
+  proc doStuff(s: string) =
+    doAssert s.safe.len > 0, "You need to pass a non empty string!"
+    echo "doStuff"
+
+  echo "Testing safe strings"
+  echo b.safe
+  echo b.safe.len
+  echo a.safe
+  echo a.safe.len
+  try:
+    a.doStuff
+    quit "Hey, we meant to assert there"
+  except EAssertionFailed:
+    echo "Tested assertion"
+
+proc test_safe_seq() =
+  var
+    a: seq[string]
+    b = @["a", "b"]
+
+  proc doStuff(s: seq[string]) =
+    doAssert s.safe.len > 0, "You need to pass a non empty sequence!"
+    echo "doStuff"
+
+  echo "a: ", a.safe.join(", ")
+  echo "a len: ", a.safe.len
+  echo "b: ", b.safe.join(", ")
+  echo "b len: ", b.safe.len
+  try:
+    a.doStuff
+    quit "Hey, we meant to assert there"
+  except EAssertionFailed:
+    echo "Tested assertion"
+
 proc test() =
   test_not_nil()
   test_dot_walk_dir_rec()
   test_exceptions()
+  test_safe_object()
+  test_safe_string()
+  test_safe_seq()
   echo "All tests run"
 
 

@@ -21,6 +21,56 @@ template not_nil*[T](x: T): bool =
   (not x.isNil)
 
 
+template `?.`*[T](n: T, c: expr): T =
+  ## Safe object field accessor.
+  ##
+  ## This operator can be used to chain field accesses which can be handy when
+  ## traversing nullable relationships. See http://forum.nimrod-lang.org/t/385
+  ## for a discussion of this.
+  let m = n
+  if m.is_nil: nil else: m.c
+
+
+proc safe*(s: string): string =
+  ## Returns a default safe value for any string if it is nil.
+  ##
+  ## Mostly for convenience debugging and assertions, this proc will never
+  ## return nil but a default empty string. Example:
+  ##
+  ## .. code-block::
+  ##   proc doStuff(s: string) =
+  ##     assert s.safe.len > 0, "You need to pass a non empty string!"
+  ##   ...
+  ##   doStuff(nil)
+  let
+    m = s
+    default {.global.} = ""
+  if m.is_nil:
+    ""
+  else:
+    m
+
+
+proc safe*[T](s: seq[T]): seq[T] =
+  ## Returns a default safe value for any sequence if it is nil.
+  ##
+  ## Mostly for convenience debugging and assertions, this proc will never
+  ## return nil but a default empty sequence. Example:
+  ##
+  ## .. code-block::
+  ##   proc doStuff(s: seq[string]) =
+  ##     assert s.safe.len > 0, "You need to pass a non empty sequence!"
+  ##   ...
+  ##   doStuff(nil)
+  let
+    m = s
+    default {.global.} : seq[T] = @[]
+  if m.is_nil:
+    default
+  else:
+    m
+
+
 proc `$`*[T](some:typedesc[T]): string =
   ## Quick wrapper around ``typetraits.name()``.
   ##
@@ -46,6 +96,7 @@ template elet*(t: typedesc): stmt =
 
   let e {.inject.}: ref t = (ref t)getCurrentException()
   doAssert(not e.isNil, "getCurrentException() called out of except block!")
+
 
 template evar*(x: expr, t: typedesc): stmt =
   ## Attempts to capture the current exception into a typed variable.
