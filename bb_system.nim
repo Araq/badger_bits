@@ -46,7 +46,7 @@ proc safe*(s: string): string =
     m = s
     default {.global.} = ""
   if m.is_nil:
-    ""
+    default
   else:
     m
 
