@@ -96,6 +96,8 @@ proc test_safe_string() =
     a: string
     b = "something"
 
+  doAssert b.last == 'g'
+
   proc doStuff(s: string) =
     doAssert s.safe.len > 0, "You need to pass a non empty string!"
     echo "doStuff"
@@ -115,6 +117,8 @@ proc test_safe_seq() =
   var
     a: seq[string]
     b = @["a", "b"]
+
+  doAssert b.last == "b"
 
   proc doStuff(s: seq[string]) =
     doAssert s.safe.len > 0, "You need to pass a non empty sequence!"

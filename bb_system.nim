@@ -6,6 +6,26 @@
 
 import typetraits
 
+
+proc last*(s: string): char {.inline.} =
+  ## Returns the last entry from `s`.
+  ##
+  ## If `s` is nil or has zero length the zero character will be returned.
+  ##
+  ## Use instead of `a[high(a)]`.
+  if s.is_nil or s.len < 1:
+    result = '\0'
+  else:
+    result = s[high(s)]
+
+
+template last*[T](a: openarray[T]): T =
+  ## Returns the last entry from an array like type `a`.
+  ##
+  ## Use instead of `a[high(a)]`.
+  a[high(a)]
+
+
 template not_nil*[T](x: T): bool =
   ## Negated version of `system.isNil()`.
   ##
