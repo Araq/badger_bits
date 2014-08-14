@@ -51,11 +51,22 @@ template `?.`*[T](n: T, c: expr): T =
   if m.is_nil: nil else: m.c
 
 
+proc nil_echo*(s: string): string =
+  ## Returns the value of `s` or the string ``(nil)`` if `s` is not nil.
+  ##
+  ## Mainly used for debugging like implementations of `$` procs which need to
+  ## output fields of an object where the empty string provided by `safe
+  ## <#safe,string>`_ might not be desirable.
+  if s.is_nil: result = "(nil)"
+  else: result = s
+
+
 proc safe*(s: string): string =
   ## Returns a default safe value for any string if it is nil.
   ##
   ## Mostly for convenience debugging and assertions, this proc will never
-  ## return nil but a default empty string. Example:
+  ## return nil but a default empty string. If the empty string is not good for
+  ## nil you could use `nil_echo <#nil_echo>`_. Usage example:
   ##
   ## .. code-block::
   ##   proc doStuff(s: string) =
@@ -66,9 +77,9 @@ proc safe*(s: string): string =
     m = s
     default {.global.} = ""
   if m.is_nil:
-    default
+    result = default
   else:
-    m
+    result = m
 
 
 proc safe*[T](s: seq[T]): seq[T] =
@@ -86,9 +97,9 @@ proc safe*[T](s: seq[T]): seq[T] =
     m = s
     default {.global.} : seq[T] = @[]
   if m.is_nil:
-    default
+    result = default
   else:
-    m
+    result = m
 
 
 proc `$`*[T](some:typedesc[T]): string =

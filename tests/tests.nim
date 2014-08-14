@@ -106,6 +106,7 @@ proc test_safe_string() =
   echo b.safe
   echo b.safe.len
   echo a.safe
+  echo a.nil_echo
   echo a.safe.len
   try:
     a.doStuff
