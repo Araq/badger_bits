@@ -12,7 +12,7 @@ proc last*(s: string): char {.inline.} =
   ##
   ## If `s` is nil or has zero length the zero character will be returned.
   ##
-  ## Use instead of `a[high(a)]`.
+  ## Use instead of ``a[high(a)]``.
   if s.is_nil or s.len < 1:
     result = '\0'
   else:
@@ -22,12 +22,12 @@ proc last*(s: string): char {.inline.} =
 template last*[T](a: openarray[T]): T =
   ## Returns the last entry from an array like type `a`.
   ##
-  ## Use instead of `a[high(a)]`.
+  ## Use instead of ``a[high(a)]``.
   a[high(a)]
 
 
 template not_nil*[T](x: T): bool =
-  ## Negated version of `system.isNil()`.
+  ## Negated version of ``system.isNil()``.
   ##
   ## `system.isNil <http://nimrod-lang.org/system.html#isNil,T>`_ is awkward to
   ## use with assertions:
@@ -148,3 +148,23 @@ template evar*(x: expr, t: typedesc): stmt =
   var x: ref t = nil
   try: x = (ref t)getCurrentException()
   except EInvalidObjectConversion: discard
+
+
+template rassert*(cond: bool, msg: string, body: stmt) {.immediate.} =
+  ## Mix between assertion in debug mode and normal ``if`` at runtime.
+  ##
+  ## This **runtime** assert will stop execution in debug builds through a
+  ## normal assert if `cond` is not met. In release builds `body` will be run
+  ## instead, which can usually contain a return to avoid crashing further down
+  ## the road. Usage example:
+  ##
+  ## .. code-block:: nimrod
+  ##   const msg = "filename parameter can't be nil!"
+  ##   rassert filename.not_nil, msg:
+  ##     raise new_exception(EInvalidValue, msg)
+  ##   ...
+  when defined(release):
+    if not(cond):
+      body
+  else:
+    assert(cond, msg)
