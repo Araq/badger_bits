@@ -52,13 +52,23 @@ template `?.`*[T](n: T, c: expr): T =
 
 
 proc nil_echo*(s: string): string =
-  ## Returns the value of `s` or the string ``(nil)`` if `s` is not nil.
+  ## Returns the value of `s` or the string ``(nil)`` if `s` is nil.
   ##
   ## Mainly used for debugging like implementations of `$` procs which need to
   ## output fields of an object where the empty string provided by `safe
   ## <#safe,string>`_ might not be desirable.
   if s.is_nil: result = "(nil)"
   else: result = s
+
+
+proc nil_echo*(s: cstring): string =
+  ## Returns the value of `s` or the string ``(nil)`` if `s` is nil.
+  ##
+  ## Mainly used for debugging like implementations of `$` procs which need to
+  ## output fields of an object where the empty string provided by `safe
+  ## <#safe,string>`_ might not be desirable.
+  if s.is_nil: result = "(nil)"
+  else: result = $s
 
 
 proc safe*(s: string): string =
@@ -82,6 +92,21 @@ proc safe*(s: string): string =
     result = m
 
 
+proc safe*(s: cstring): cstring =
+  ## Returns a default safe value for any cstring if it is nil.
+  ##
+  ## Mostly for convenience debugging and assertions, this proc will never
+  ## return nil but a default empty cstring. If the empty string is not good for
+  ## nil you could use `nil_echo <#nil_echo>`_.
+  let
+    m = s
+    default {.global.} = ""
+  if m.is_nil:
+    result = cstring(default)
+  else:
+    result = m
+
+
 proc safe*[T](s: seq[T]): seq[T] =
   ## Returns a default safe value for any sequence if it is nil.
   ##
@@ -100,6 +125,16 @@ proc safe*[T](s: seq[T]): seq[T] =
     result = default
   else:
     result = m
+
+
+template nil_string*(s: cstring): string =
+  ## Returns nil if `s` is nil, or the converted cstring otherwise.
+  if s.is_nil: nil else: $s
+
+
+template nil_cstring*(s: string): cstring =
+  ## Returns nil if `s` is nil, or the converted string otherwise.
+  if s.is_nil: nil else: cstring(s)
 
 
 proc `$`*[T](some:typedesc[T]): string =
