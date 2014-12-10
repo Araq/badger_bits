@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Index</title>
+<title>Badger bits readme</title>
 <style type="text/css">
 
 span.DecNumber {color: blue}
@@ -238,90 +238,37 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 </head>
 <body>
 <div class="document" id="documentId">
-<h1 class="title">Index</h1>
-Documents: <a href="docs/changes.html">Badger bits changes log</a>, <a href="license.html">Badger bits license</a>, <a href="README.html">Badger bits readme</a>, <a href="docs/release_steps.html">Badger bits release steps</a>.<br><p />Modules: <a href="bb_os.html">bb_os</a>, <a href="bb_system.html">bb_system</a>.<br><p /><h2>Documentation files</h2>
-<ul><li><a href="docs/changes.html">Badger bits changes log</a>
-<ul>
-<li><a href="docs/changes.html#v0-2-1">v0.2.1, ????-??-??</a>
-<li><a href="docs/changes.html#v0-2-0-2014-12-10">v0.2.0, 2014-12-10</a>
-</ul>
-</ul>
-<ul><li><a href="license.html">Badger bits license</a>
-<ul>
-</ul>
-</ul>
-<ul><li><a href="README.html">Badger bits readme</a>
-<ul>
-<li><a href="README.html#changes">Changes</a>
-<li><a href="README.html#license">License</a>
-<li><a href="README.html#installation">Installation</a>
-<ul><li><a href="README.html#development-version">Development version</a>
-<li><a href="README.html#stable-version">Stable version</a>
-</ul><li><a href="README.html#git-branches">Git branches</a>
-<li><a href="README.html#feedback">Feedback</a>
-</ul>
-</ul>
-<ul><li><a href="docs/release_steps.html">Badger bits release steps</a>
-<ul>
-</ul>
-</ul>
-<h2>API symbols</h2>
-<dt><span>`$`:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Quick wrapper around ``typetraits.name()``.…" href="bb_system.html#$,typedesc[T]">bb_system : `$`*[T](some: typedesc[T]): string</a></li>
-          </ul></dd>
-<dt><span>`?.`:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Safe object field accessor.…" href="bb_system.html#?..t,T,expr">bb_system : `?.`*[T](n: T; c: expr): T</a></li>
-          </ul></dd>
-<dt><span>dot_walk_dir_rec:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Version of os.walkDirRec which ignores items starting with a dot.…" href="bb_os.html#dot_walk_dir_rec.i,string">bb_os : dot_walk_dir_rec*(dir: string; filter = {pcFile, pcDir}): string</a></li>
-          </ul></dd>
-<dt><span>elet:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Captures the current exception into a typed variable.…" href="bb_system.html#elet.t,typedesc">bb_system : elet*(t: typedesc): stmt</a></li>
-          </ul></dd>
-<dt><span>evar:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Attempts to capture the current exception into a typed variable.…" href="bb_system.html#evar.t,expr,typedesc">bb_system : evar*(x: expr; t: typedesc): stmt</a></li>
-          </ul></dd>
-<dt><span>last:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns the last entry from `s`.…" href="bb_system.html#last,string">bb_system : last*(s: string): char</a></li>
-          <li><a class="reference external"
-          title="Returns the last entry from an array like type `a`.…" href="bb_system.html#last.t,openarray[T]">bb_system : last*[T](a: openarray[T]): T</a></li>
-          </ul></dd>
-<dt><span>nil_cstring:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns nil if `s` is nil, or the converted string otherwise." href="bb_system.html#nil_cstring.t,string">bb_system : nil_cstring*(s: string): cstring</a></li>
-          </ul></dd>
-<dt><span>nil_echo:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns the value of `s` or the string ``(nil)`` if `s` is nil.…" href="bb_system.html#nil_echo,cstring">bb_system : nil_echo*(s: cstring): string</a></li>
-          <li><a class="reference external"
-          title="Returns the value of `s` or the string ``(nil)`` if `s` is nil.…" href="bb_system.html#nil_echo,string">bb_system : nil_echo*(s: string): string</a></li>
-          </ul></dd>
-<dt><span>nil_string:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns nil if `s` is nil, or the converted cstring otherwise." href="bb_system.html#nil_string.t,cstring">bb_system : nil_string*(s: cstring): string</a></li>
-          </ul></dd>
-<dt><span>not_nil:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Negated version of ``system.isNil()``.…" href="bb_system.html#not_nil.t,T">bb_system : not_nil*[T](x: T): bool</a></li>
-          </ul></dd>
-<dt><span>rassert:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Mix between assertion in debug mode and normal ``if`` at runtime.…" href="bb_system.html#rassert.t,bool,string,stmt">bb_system : rassert*(cond: bool; msg: string; body: stmt)</a></li>
-          </ul></dd>
-<dt><span>safe:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns a default safe value for any cstring if it is nil.…" href="bb_system.html#safe,cstring">bb_system : safe*(s: cstring): cstring</a></li>
-          <li><a class="reference external"
-          title="Returns a default safe value for any sequence if it is nil.…" href="bb_system.html#safe,seq[T]">bb_system : safe*[T](s: seq[T]): seq[T]</a></li>
-          <li><a class="reference external"
-          title="Returns a default safe value for any string if it is nil.…" href="bb_system.html#safe,string">bb_system : safe*(s: string): string</a></li>
-          </ul></dd>
+<h1 class="title">Badger bits readme</h1>
+<p>This module contains <a class="reference external" href="https://github.com/gradha">gradha's</a> tweaks and shortcuts for the <a class="reference external" href="http://nimrod-lang.org">Nimrod programming language</a>.  You can read pre generated documentation at <a class="reference external" href="http://gradha.github.io/badger_bits/">http://gradha.github.io/badger_bits/</a>. You can also generate this documentation locally typing <tt class="docutils literal"><span class="pre">nake doc</span></tt> once you have the software on your machine.</p>
+
+<h1 id="changes">Changes</h1><p>This is stable version 0.2.0. For a list of changes see the <a class="reference external" href="docs/changes.html">docs/changes.rst</a> file.</p>
+
+<h1 id="license">License</h1><p><a class="reference external" href="license.html">MIT license</a>.</p>
+
+<h1 id="installation">Installation</h1>
+<h2 id="development-version">Development version</h2><p>Install the <a class="reference external" href="http://nimrod-lang.org">Nimrod compiler</a>. Then use <a class="reference external" href="https://github.com/nim-lang/nimble">Nimrod's Nimble package manager</a> to install locally the GitHub checkout:<pre>
+$ git clone https://github.com/gradha/badger_bits.git
+$ cd badger_bits
+$ nimble install -y</pre>
+</p>
+<p>If you don't mind downloading the git repository every time, you can also tell Nimble to install the latest development version directly from git:<pre>
+$ nimble install -y https://github.com/gradha/badger_bits.git@#head</pre>
+</p>
+
+<h2 id="stable-version">Stable version</h2><p>The stable version is usually meant to be used as a dependency for another project. You would have to add the following to your nimble spec:<pre>
+[Deps]
+Requires: &quot;https://github.com/gradha/badger_bits.git@#stable&quot;</pre>
+</p>
+<p>Alternatively you could use a specific tag:<pre>
+[Deps]
+Requires: &quot;https://github.com/gradha/badger_bits.git@#vX.Y.Z&quot;</pre>
+</p>
+
+<h1 id="git-branches">Git branches</h1><p>This project uses the <a class="reference external" href="https://github.com/nvie/gitflow">git-flow branching model</a> with reversed defaults. Stable releases are tracked in the <tt class="docutils literal"><span class="pre">stable</span></tt> branch. Development happens in the default <tt class="docutils literal"><span class="pre">master</span></tt> branch.</p>
+
+<h1 id="feedback">Feedback</h1><p>You can send me feedback through <a class="reference external" href="https://github.com/gradha/badger_bits/issues">GitHub's issue tracker</a>. I also take a look from time to time to <a class="reference external" href="http://forum.nimrod-lang.org">Nimrod's forums</a> where you can talk to other nimrod programmers. </p>
+
+
 
 <small>Generated: 2014-12-10 13:59:45 UTC</small>
 </div>
