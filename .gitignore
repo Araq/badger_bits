@@ -9,4 +9,7 @@ nimcache/
 /bb_os.html
 /bb_system
 /bb_system.html
+/docs/*.html
 /license.html
+/nakefile
+/nakefile.html
