@@ -239,13 +239,38 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <body>
 <div class="document" id="documentId">
 <h1 class="title">Badger bits readme</h1>
-<p>This module contains <a class="reference external" href="https://github.com/gradha">gradha's</a> tweaks and shortcuts for the <a class="reference external" href="http://nimrod-lang.org">Nimrod programming language</a>. This module is meant to be used as a git submodule to avoid repetition. You can read pre generated documentation at <a class="reference external" href="http://gradha.github.io/badger_bits/">http://gradha.github.io/badger_bits/</a>.</p>
+<p>This module contains <a class="reference external" href="https://github.com/gradha">gradha's</a> tweaks and shortcuts for the <a class="reference external" href="http://nimrod-lang.org">Nimrod programming language</a>.  You can read pre generated documentation at <a class="reference external" href="http://gradha.github.io/badger_bits/">http://gradha.github.io/badger_bits/</a>. You can also generate this documentation locally typing <tt class="docutils literal"><span class="pre">nake doc</span></tt> once you have the software on your machine.</p>
 
-<h1 id="license">License</h1><p><a class="reference external" href="license.html">MIT license</a>. </p>
+<h1 id="changes">Changes</h1><p>This is development version 0.1.0. For a list of changes see the <a class="reference external" href="docs/changes.html">docs/changes.rst</a> file.</p>
+
+<h1 id="license">License</h1><p><a class="reference external" href="license.html">MIT license</a>.</p>
+
+<h1 id="installation">Installation</h1>
+<h2 id="development-version">Development version</h2><p>Install the <a class="reference external" href="http://nimrod-lang.org">Nimrod compiler</a>. Then use <a class="reference external" href="https://github.com/nim-lang/nimble">Nimrod's Nimble package manager</a> to install locally the GitHub checkout:<pre>
+$ git clone https://github.com/gradha/badger_bits.git
+$ cd badger_bits
+$ nimble install -y</pre>
+</p>
+<p>If you don't mind downloading the git repository every time, you can also tell Nimble to install the latest development version directly from git:<pre>
+$ nimble install -y https://github.com/gradha/badger_bits.git@#head</pre>
+</p>
+
+<h2 id="stable-version">Stable version</h2><p>The stable version is usually meant to be used as a dependency for another project. You would have to add the following to your nimble spec:<pre>
+[Deps]
+Requires: &quot;https://github.com/gradha/badger_bits.git@#stable&quot;</pre>
+</p>
+<p>Alternatively you could use a specific tag:<pre>
+[Deps]
+Requires: &quot;https://github.com/gradha/badger_bits.git@#vX.Y.Z&quot;</pre>
+</p>
+
+<h1 id="git-branches">Git branches</h1><p>This project uses the <a class="reference external" href="https://github.com/nvie/gitflow">git-flow branching model</a> with reversed defaults. Stable releases are tracked in the <tt class="docutils literal"><span class="pre">stable</span></tt> branch. Development happens in the default <tt class="docutils literal"><span class="pre">master</span></tt> branch.</p>
+
+<h1 id="feedback">Feedback</h1><p>You can send me feedback through <a class="reference external" href="https://github.com/gradha/badger_bits/issues">GitHub's issue tracker</a>. I also take a look from time to time to <a class="reference external" href="http://forum.nimrod-lang.org">Nimrod's forums</a> where you can talk to other nimrod programmers. </p>
 
 
 
-<small>Generated: 2014-08-05 21:21:20 UTC</small>
+<small>Generated: 2014-12-10 13:43:36 UTC</small>
 </div>
 </body>
 </html>

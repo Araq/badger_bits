@@ -250,8 +250,16 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <li>
   <a class="reference" href="#12" id="62">Procs</a>
   <ul class="simple">
-      <li><a class="reference" href="#safe,string"
+      <li><a class="reference" href="#last,string"
+    title="last*(s: string): char"><wbr />last</a></li>
+  <li><a class="reference" href="#nil_echo,string"
+    title="nil_echo*(s: string): string"><wbr />nil_<wbr />echo</a></li>
+  <li><a class="reference" href="#nil_echo,cstring"
+    title="nil_echo*(s: cstring): string"><wbr />nil_<wbr />echo</a></li>
+  <li><a class="reference" href="#safe,string"
     title="safe*(s: string): string"><wbr />safe</a></li>
+  <li><a class="reference" href="#safe,cstring"
+    title="safe*(s: cstring): cstring"><wbr />safe</a></li>
   <li><a class="reference" href="#safe,seq[T]"
     title="safe*[T](s: seq[T]): seq[T]"><wbr />safe</a></li>
   <li><a class="reference" href="#$,typedesc[T]"
@@ -262,14 +270,22 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <li>
   <a class="reference" href="#18" id="68">Templates</a>
   <ul class="simple">
-      <li><a class="reference" href="#not_nil.t,T"
+      <li><a class="reference" href="#last.t,openarray[T]"
+    title="last*[T](a: openarray[T]): T"><wbr />last</a></li>
+  <li><a class="reference" href="#not_nil.t,T"
     title="not_nil*[T](x: T): bool"><wbr />not_<wbr />nil</a></li>
   <li><a class="reference" href="#?..t,T,expr"
     title="`?.`*[T](n: T; c: expr): T">`<wbr />?.`</a></li>
+  <li><a class="reference" href="#nil_string.t,cstring"
+    title="nil_string*(s: cstring): string"><wbr />nil_<wbr />string</a></li>
+  <li><a class="reference" href="#nil_cstring.t,string"
+    title="nil_cstring*(s: string): cstring"><wbr />nil_<wbr />cstring</a></li>
   <li><a class="reference" href="#elet.t,typedesc"
     title="elet*(t: typedesc): stmt"><wbr />elet</a></li>
   <li><a class="reference" href="#evar.t,expr,typedesc"
     title="evar*(x: expr; t: typedesc): stmt"><wbr />evar</a></li>
+  <li><a class="reference" href="#rassert.t,bool,string,stmt"
+    title="rassert*(cond: bool; msg: string; body: stmt)"><wbr />rassert</a></li>
 
   </ul>
 </li>
@@ -288,14 +304,43 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <div class="section" id="12">
 <h1><a class="toc-backref" href="#62">Procs</a></h1>
 <dl class="item">
+<dt id="last"><a name="last,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">last</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">char</span> <span class="Other">{.</span><span class="Identifier">inline</span><span class="Other">.}</span></pre></dt>
+<dd>
+<p>Returns the last entry from <cite>s</cite>.</p>
+<p>If <cite>s</cite> is nil or has zero length the zero character will be returned.</p>
+<p>Use instead of <tt class="docutils literal"><span class="pre">a[high(a)]</span></tt>.</p>
+
+
+</dd>
+<dt id="nil_echo"><a name="nil_echo,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">nil_echo</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>Returns the value of <cite>s</cite> or the string <tt class="docutils literal"><span class="pre">(nil)</span></tt> if <cite>s</cite> is nil.</p>
+<p>Mainly used for debugging like implementations of <cite>$</cite> procs which need to output fields of an object where the empty string provided by <a class="reference external" href="#safe,string">safe</a> might not be desirable.</p>
+
+
+</dd>
+<dt id="nil_echo"><a name="nil_echo,cstring"></a><pre><span class="Keyword">proc</span> <span class="Identifier">nil_echo</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">cstring</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+<p>Returns the value of <cite>s</cite> or the string <tt class="docutils literal"><span class="pre">(nil)</span></tt> if <cite>s</cite> is nil.</p>
+<p>Mainly used for debugging like implementations of <cite>$</cite> procs which need to output fields of an object where the empty string provided by <a class="reference external" href="#safe,string">safe</a> might not be desirable.</p>
+
+
+</dd>
 <dt id="safe"><a name="safe,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">safe</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 <p>Returns a default safe value for any string if it is nil.</p>
-<p>Mostly for convenience debugging and assertions, this proc will never return nil but a default empty string. Example:</p>
+<p>Mostly for convenience debugging and assertions, this proc will never return nil but a default empty string. If the empty string is not good for nil you could use <a class="reference external" href="#nil_echo">nil_echo</a>. Usage example:</p>
 <pre><span class="Keyword">proc</span> <span class="Identifier">doStuff</span><span class="Punctuation">(</span><span class="Identifier">s</span><span class="Punctuation">:</span> <span class="Identifier">string</span><span class="Punctuation">)</span> <span class="Operator">=</span>
   <span class="Identifier">assert</span> <span class="Identifier">s</span><span class="Operator">.</span><span class="Identifier">safe</span><span class="Operator">.</span><span class="Identifier">len</span> <span class="Operator">&gt;</span> <span class="DecNumber">0</span><span class="Punctuation">,</span> <span class="StringLit">&quot;You need to pass a non empty string!&quot;</span>
 <span class="Operator">...</span>
 <span class="Identifier">doStuff</span><span class="Punctuation">(</span><span class="Keyword">nil</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<dt id="safe"><a name="safe,cstring"></a><pre><span class="Keyword">proc</span> <span class="Identifier">safe</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">cstring</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">cstring</span></pre></dt>
+<dd>
+<p>Returns a default safe value for any cstring if it is nil.</p>
+<p>Mostly for convenience debugging and assertions, this proc will never return nil but a default empty cstring. If the empty string is not good for nil you could use <a class="reference external" href="#nil_echo">nil_echo</a>.</p>
+
 
 </dd>
 <dt id="safe"><a name="safe,seq[T]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">safe</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">seq</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span></pre></dt>
@@ -320,9 +365,16 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <div class="section" id="18">
 <h1><a class="toc-backref" href="#68">Templates</a></h1>
 <dl class="item">
+<dt id="last"><a name="last.t,openarray[T]"></a><pre><span class="Keyword">template</span> <span class="Identifier">last</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <span class="Identifier">openarray</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">T</span></pre></dt>
+<dd>
+<p>Returns the last entry from an array like type <cite>a</cite>.</p>
+<p>Use instead of <tt class="docutils literal"><span class="pre">a[high(a)]</span></tt>.</p>
+
+
+</dd>
 <dt id="not_nil"><a name="not_nil.t,T"></a><pre><span class="Keyword">template</span> <span class="Identifier">not_nil</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">x</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
 <dd>
-<p>Negated version of <cite>system.isNil()</cite>.</p>
+<p>Negated version of <tt class="docutils literal"><span class="pre">system.isNil()</span></tt>.</p>
 <p><a class="reference external" href="http://nimrod-lang.org/system.html#isNil,T">system.isNil</a> is awkward to use with assertions:</p>
 <pre><span class="Identifier">assert</span> <span class="Identifier">x</span><span class="Operator">.</span><span class="Identifier">not_nil</span>
 <span class="Comment"># The following does not compute.</span>
@@ -336,6 +388,16 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <p>Safe object field accessor.</p>
 <p>This operator can be used to chain field accesses which can be handy when traversing nullable relationships. See <a class="reference external" href="http://forum.nimrod-lang.org/t/385">http://forum.nimrod-lang.org/t/385</a> for a discussion of this.</p>
 
+
+</dd>
+<dt id="nil_string"><a name="nil_string.t,cstring"></a><pre><span class="Keyword">template</span> <span class="Identifier">nil_string</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">cstring</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
+<dd>
+Returns nil if <cite>s</cite> is nil, or the converted cstring otherwise.
+
+</dd>
+<dt id="nil_cstring"><a name="nil_cstring.t,string"></a><pre><span class="Keyword">template</span> <span class="Identifier">nil_cstring</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">s</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">cstring</span></pre></dt>
+<dd>
+Returns nil if <cite>s</cite> is nil, or the converted string otherwise.
 
 </dd>
 <dt id="elet"><a name="elet.t,typedesc"></a><pre><span class="Keyword">template</span> <span class="Identifier">elet</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <span class="Identifier">typedesc</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">stmt</span></pre></dt>
@@ -362,12 +424,22 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
   <span class="Identifier">echo</span> <span class="StringLit">&quot;auto: Is IO? &quot;</span><span class="Punctuation">,</span> <span class="Punctuation">(</span><span class="Keyword">not</span> <span class="Identifier">i</span><span class="Operator">.</span><span class="Identifier">isNil</span><span class="Punctuation">)</span></pre>
 
 </dd>
+<dt id="rassert"><a name="rassert.t,bool,string,stmt"></a><pre><span class="Keyword">template</span> <span class="Identifier">rassert</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">cond</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">;</span> <span class="Identifier">msg</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">body</span><span class="Other">:</span> <span class="Identifier">stmt</span><span class="Other">)</span> <span class="Other">{.</span><span class="Identifier">immediate</span><span class="Other">.}</span></pre></dt>
+<dd>
+<p>Mix between assertion in debug mode and normal <tt class="docutils literal"><span class="pre">if</span></tt> at runtime.</p>
+<p>This <strong>runtime</strong> assert will stop execution in debug builds through a normal assert if <cite>cond</cite> is not met. In release builds <cite>body</cite> will be run instead, which can usually contain a return to avoid crashing further down the road. Usage example:</p>
+<pre><span class="Keyword">const</span> <span class="Identifier">msg</span> <span class="Operator">=</span> <span class="StringLit">&quot;filename parameter can't be nil!&quot;</span>
+<span class="Identifier">rassert</span> <span class="Identifier">filename</span><span class="Operator">.</span><span class="Identifier">not_nil</span><span class="Punctuation">,</span> <span class="Identifier">msg</span><span class="Punctuation">:</span>
+  <span class="Keyword">raise</span> <span class="Identifier">new_exception</span><span class="Punctuation">(</span><span class="Identifier">EInvalidValue</span><span class="Punctuation">,</span> <span class="Identifier">msg</span><span class="Punctuation">)</span>
+<span class="Operator">...</span></pre>
+
+</dd>
 
 </dl></div>
 
 </div>
 
-<small>Generated: 2014-08-05 21:21:20 UTC</small>
+<small>Generated: 2014-12-10 13:43:36 UTC</small>
 </div>
 </body>
 </html>

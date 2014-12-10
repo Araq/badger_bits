@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Index</title>
+<title>Badger bits changes log</title>
 <style type="text/css">
 
 span.DecNumber {color: blue}
@@ -238,89 +238,13 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 </head>
 <body>
 <div class="document" id="documentId">
-<h1 class="title">Index</h1>
-Documents: <a href="docs/changes.html">Badger bits changes log</a>, <a href="license.html">Badger bits license</a>, <a href="README.html">Badger bits readme</a>, <a href="docs/release_steps.html">Badger bits release steps</a>.<br><p />Modules: <a href="bb_os.html">bb_os</a>, <a href="bb_system.html">bb_system</a>.<br><p /><h2>Documentation files</h2>
-<ul><li><a href="docs/changes.html">Badger bits changes log</a>
-<ul>
-<li><a href="docs/changes.html#v0-1-0">v0.1.0, ????-??-??</a>
+<h1 class="title">Badger bits changes log</h1>
+<p>This is the changes log for the <a class="reference external" href="https://github.com/gradha/badger_bits">badger_bits module</a>.  See the <a class="reference external" href="../README.html">README</a>.</p>
+
+<h1 id="v0-1-0">v0.1.0, ????-??-??</h1><ul class="simple"><li><a class="reference external" href="https://github.com/gradha/badger_bits/issues/1">Made proper nimble package</a>.</li>
 </ul>
-</ul>
-<ul><li><a href="license.html">Badger bits license</a>
-<ul>
-</ul>
-</ul>
-<ul><li><a href="README.html">Badger bits readme</a>
-<ul>
-<li><a href="README.html#changes">Changes</a>
-<li><a href="README.html#license">License</a>
-<li><a href="README.html#installation">Installation</a>
-<ul><li><a href="README.html#development-version">Development version</a>
-<li><a href="README.html#stable-version">Stable version</a>
-</ul><li><a href="README.html#git-branches">Git branches</a>
-<li><a href="README.html#feedback">Feedback</a>
-</ul>
-</ul>
-<ul><li><a href="docs/release_steps.html">Badger bits release steps</a>
-<ul>
-</ul>
-</ul>
-<h2>API symbols</h2>
-<dt><span>`$`:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Quick wrapper around ``typetraits.name()``.…" href="bb_system.html#$,typedesc[T]">bb_system : `$`*[T](some: typedesc[T]): string</a></li>
-          </ul></dd>
-<dt><span>`?.`:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Safe object field accessor.…" href="bb_system.html#?..t,T,expr">bb_system : `?.`*[T](n: T; c: expr): T</a></li>
-          </ul></dd>
-<dt><span>dot_walk_dir_rec:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Version of os.walkDirRec which ignores items starting with a dot.…" href="bb_os.html#dot_walk_dir_rec.i,string">bb_os : dot_walk_dir_rec*(dir: string; filter = {pcFile, pcDir}): string</a></li>
-          </ul></dd>
-<dt><span>elet:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Captures the current exception into a typed variable.…" href="bb_system.html#elet.t,typedesc">bb_system : elet*(t: typedesc): stmt</a></li>
-          </ul></dd>
-<dt><span>evar:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Attempts to capture the current exception into a typed variable.…" href="bb_system.html#evar.t,expr,typedesc">bb_system : evar*(x: expr; t: typedesc): stmt</a></li>
-          </ul></dd>
-<dt><span>last:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns the last entry from `s`.…" href="bb_system.html#last,string">bb_system : last*(s: string): char</a></li>
-          <li><a class="reference external"
-          title="Returns the last entry from an array like type `a`.…" href="bb_system.html#last.t,openarray[T]">bb_system : last*[T](a: openarray[T]): T</a></li>
-          </ul></dd>
-<dt><span>nil_cstring:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns nil if `s` is nil, or the converted string otherwise." href="bb_system.html#nil_cstring.t,string">bb_system : nil_cstring*(s: string): cstring</a></li>
-          </ul></dd>
-<dt><span>nil_echo:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns the value of `s` or the string ``(nil)`` if `s` is nil.…" href="bb_system.html#nil_echo,cstring">bb_system : nil_echo*(s: cstring): string</a></li>
-          <li><a class="reference external"
-          title="Returns the value of `s` or the string ``(nil)`` if `s` is nil.…" href="bb_system.html#nil_echo,string">bb_system : nil_echo*(s: string): string</a></li>
-          </ul></dd>
-<dt><span>nil_string:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns nil if `s` is nil, or the converted cstring otherwise." href="bb_system.html#nil_string.t,cstring">bb_system : nil_string*(s: cstring): string</a></li>
-          </ul></dd>
-<dt><span>not_nil:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Negated version of ``system.isNil()``.…" href="bb_system.html#not_nil.t,T">bb_system : not_nil*[T](x: T): bool</a></li>
-          </ul></dd>
-<dt><span>rassert:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Mix between assertion in debug mode and normal ``if`` at runtime.…" href="bb_system.html#rassert.t,bool,string,stmt">bb_system : rassert*(cond: bool; msg: string; body: stmt)</a></li>
-          </ul></dd>
-<dt><span>safe:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Returns a default safe value for any cstring if it is nil.…" href="bb_system.html#safe,cstring">bb_system : safe*(s: cstring): cstring</a></li>
-          <li><a class="reference external"
-          title="Returns a default safe value for any sequence if it is nil.…" href="bb_system.html#safe,seq[T]">bb_system : safe*[T](s: seq[T]): seq[T]</a></li>
-          <li><a class="reference external"
-          title="Returns a default safe value for any string if it is nil.…" href="bb_system.html#safe,string">bb_system : safe*(s: string): string</a></li>
-          </ul></dd>
+
+
 
 <small>Generated: 2014-12-10 13:43:36 UTC</small>
 </div>
