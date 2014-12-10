@@ -10,8 +10,6 @@ module <https://github.com/gradha/badger_bits>`_. See the `README
 * Create new milestone with version number (``vXXX``) at
   https://github.com/gradha/badger_bits/milestones.
 * Create new dummy issue `Release versionname` and assign to that milestone.
-* Annotate the release issue with the Nimrod commit used to compile sources or
-  stable version.
 * ``git flow release start versionname`` (versionname without v).
 * Update version numbers:
 
@@ -19,7 +17,6 @@ module <https://github.com/gradha/badger_bits>`_. See the `README
   * Modify `docs/changes.rst <changes.rst>`_ with list of changes and
     version/number.
   * Modify `badger_bits.nimble <../badger_bits.nimble>`_.
-  * Modify `bb_system.nim <../bb_system.nim>`_.
 
 * ``git commit -av`` into the release branch the version number changes.
 * ``git flow release finish versionname`` (the tagname is versionname without
@@ -30,7 +27,6 @@ module <https://github.com/gradha/badger_bits>`_. See the `README
 
   * Modify `README.rst <../README.rst>`_.
   * Modify `badger_bits.nimble <../badger_bits.nimble>`_.
-  * Modify `bb_system.nim <../bb_system.nim>`_.
   * Add to `docs/changes.rst <changes.rst>`_ development version with unknown
     date.
 
@@ -40,7 +36,7 @@ module <https://github.com/gradha/badger_bits>`_. See the `README
 * Regenerate static website.
 
   * Make sure git doesn't show changes, then run ``nake web`` and review.
-  * ``git add gh_docs && git commit``. Tag with
+  * ``git add . && git commit``. Tag with
     `Regenerates website. Refs #release_issue`.
   * ``./nakefile postweb`` to return to the previous branch. This also updates
     submodules, so it is easier.
@@ -48,4 +44,3 @@ module <https://github.com/gradha/badger_bits>`_. See the `README
 * ``git push origin master stable gh-pages --tags``.
 * Close the dummy release issue.
 * Close the milestone on github.
-* Announce at http://forum.nimrod-lang.org/.
