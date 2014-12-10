@@ -12,7 +12,7 @@ have the software on your machine.
 Changes
 =======
 
-This is development version 0.1.0. For a list of changes see the
+This is stable version 0.2.0. For a list of changes see the
 `docs/changes.rst <docs/changes.rst>`_ file.
 
 
