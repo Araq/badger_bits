@@ -9,4 +9,5 @@ This is the changes log for the `badger_bits module
 v0.1.0, ????-??-??
 ------------------
 
-* ???
+* `Made proper nimble package
+  <https://github.com/gradha/badger_bits/issues/1>`_.
