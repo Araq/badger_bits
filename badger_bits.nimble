@@ -10,3 +10,19 @@ Not good enough to make it to the standard library.
 
 Not bad enough to copy and paste.
 """
+
+installDirs = """
+
+docs
+
+"""
+
+InstallFiles = """
+
+README.rst
+bb_os.nim
+bb_system.nim
+license.rst
+nakefile.nim
+
+"""
