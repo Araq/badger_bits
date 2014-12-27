@@ -52,7 +52,7 @@ proc copy_vagrant*(dest: string) =
   ## Copies the current git files to `dest`/``software``.
   ##
   ## The files to copy are found out with ``git ls-files -c``. The
-  ## `sybil_systems <#sybil_systems>`_ witness will be created at `dest`.
+  ## `sybil_witness <#sybil_witness>`_ witness will be created at `dest`.
   let
     dest = dest/"software"
     paths = filter_it(to_seq(
@@ -72,17 +72,34 @@ proc build_vagrant*(vagrant_dir, remote_shell_commands: string) =
   ## that will be embedded inside a shell command, so you can run several
   ## commands with ``&&``. Example:
   ##
-  ## .. code-block:
+  ## .. code-block::
   ##   build_vagrant("dir", "nake test && nimble build && nake install")
+  ##
+  ## Alternatively you can pass a multiline string, where each newline will be
+  ## replaced with double ampersands. Equivalent example:
+  ##
+  ## .. code-block::
+  ##   build_vagrant("dir", """
+  ##     nake test
+  ##     nimble build
+  ##     nake install""")
   ##
   ## The commands will be run in the ``/vagrant/software`` directory, populated
   ## previously by `copy_vagrant() <#copy_vagrant>`_.  After all work has done
   ## the vagrant instance is halted. This doesn't do any provisioning, the
   ## vagrant instances are meant to be prepared beforehand.
+  var commands = remote_shell_commands
+  if commands.find(NewLines) >= 0:
+    # Split into lines, strip and merge with ampersands.
+    var multi = commands.split_lines
+    multi.map_it(it.strip)
+    multi = multi.filter_it(it.len > 0)
+    commands = multi.join(" && ")
+
   with_dir vagrant_dir:
     dire_shell "vagrant up"
     dire_shell("vagrant ssh -c '" &
-      "cd /vagrant/software && " & remote_shell_commands & " && " &
+      "cd /vagrant/software && " & commands & " && " &
       "echo done'")
     dire_shell "vagrant halt"
 
