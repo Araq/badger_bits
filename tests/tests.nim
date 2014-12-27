@@ -1,12 +1,13 @@
-import bb_system, bb_os, sequtils, algorithm, strutils
+import
+  bb_system, bb_os, sequtils, algorithm, strutils, bb_nake
 
 
 proc test_not_nil() =
   var s: string
-  assert s.is_nil
+  do_assert s.is_nil
   s = ""
-  assert(not s.is_nil)
-  assert s.not_nil
+  do_assert(not s.is_nil)
+  do_assert s.not_nil
   s = nil
 
 
@@ -30,12 +31,12 @@ proc test_dot_walk_dir_rec() =
 
   var l = to_seq(dir.dot_walk_dir_rec)
   l.sort(system.cmp)
-  assert l == @good_result
-  assert l != @bad_result
+  do_assert l == @good_result
+  do_assert l != @bad_result
   l = to_seq(dir.walk_dir_rec)
   l.sort(system.cmp)
-  assert l == @bad_result
-  assert l != @good_result
+  do_assert l == @bad_result
+  do_assert l != @good_result
 
 
 proc test_exceptions() =
@@ -52,8 +53,8 @@ proc test_exceptions() =
     evar i, EIO
     echo "auto: Is arithmetic? ", (not m.isNil)
     echo "auto: Is IO? ", (not i.isNil)
-    assert m.not_nil
-    assert i.is_nil
+    do_assert m.not_nil
+    do_assert i.is_nil
 
   try:
     badIO()
@@ -87,19 +88,19 @@ proc test_safe_object() =
   var b = parent?.child?.child?.child
   var c = parent?.child?.child?.child?.child
 
-  assert a != nil
-  assert b == nil
-  assert c == nil
+  do_assert a != nil
+  do_assert b == nil
+  do_assert c == nil
 
 proc test_safe_string() =
   var
     a: string
     b = "something"
 
-  doAssert b.last == 'g'
+  do_assert b.last == 'g'
 
   proc doStuff(s: string) =
-    doAssert s.safe.len > 0, "You need to pass a non empty string!"
+    do_assert s.safe.len > 0, "You need to pass a non empty string!"
     echo "doStuff"
 
   echo "Testing safe strings"
@@ -119,10 +120,10 @@ proc test_safe_seq() =
     a: seq[string]
     b = @["a", "b"]
 
-  doAssert b.last == "b"
+  do_assert b.last == "b"
 
   proc doStuff(s: seq[string]) =
-    doAssert s.safe.len > 0, "You need to pass a non empty sequence!"
+    do_assert s.safe.len > 0, "You need to pass a non empty sequence!"
     echo "doStuff"
 
   echo "a: ", a.safe.join(", ")
@@ -135,6 +136,26 @@ proc test_safe_seq() =
   except EAssertionFailed:
     echo "Tested assertion"
 
+
+proc test_cp() =
+  dist_dir.remove_dir
+  dist_dir.create_dir
+
+  let dest_nim = dist_dir/"file"
+  cp("tests.nim", dest_nim)
+  do_assert dest_nim.exists_file
+
+  dist_dir.remove_dir
+  let dest_dir = dist_dir/"temp"/"dot_walk_dir_rec2"
+  cp("dot_walk_dir_rec", dest_dir)
+  do_assert exists_file(dest_dir/"this_also")
+
+
+proc test_shell() =
+  dist_dir.create_dir
+  when defined(macosx): test_shell "rm -R", dist_dir
+
+
 proc test() =
   test_not_nil()
   test_dot_walk_dir_rec()
@@ -142,7 +163,11 @@ proc test() =
   test_safe_object()
   test_safe_string()
   test_safe_seq()
+  test_cp()
+  test_shell()
   echo "All tests run"
 
 
 when isMainModule: test()
+
+task "dummy", "Required for nake import to work": test()
