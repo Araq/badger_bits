@@ -3,7 +3,7 @@
 ## Contains stuff `nakefiles <https://github.com/fowlmouth/nake>`_ code.
 
 import
-  nake, os, bb_system, osproc, parseopt, rdstdin, strutils, tables
+  nake, os, bb_system, osproc, parseopt, rdstdin, strutils, tables, sequtils
 
 
 type
@@ -14,6 +14,7 @@ type
 const
   sybil_witness* = ".sybil_systems"
   dist_dir* = "dist"
+  vagrant_linux_dir* = "vagrant_linux"
 
 
 proc cp*(src, dest: string) =
@@ -45,6 +46,66 @@ proc test_shell*(cmd: varargs[string, `$`]): bool {.discardable.} =
     var e = new_exception(Shell_failure, "Error running " & full_command)
     e.errors = output
     raise e
+
+
+proc copy_vagrant*(dest: string) =
+  ## Copies the current git files to `dest`/``software``.
+  ##
+  ## The files to copy are found out with ``git ls-files -c``. The
+  ## `sybil_systems <#sybil_systems>`_ witness will be created at `dest`.
+  let
+    dest = dest/"software"
+    paths = filter_it(to_seq(
+      exec_cmd_ex("git ls-files -c").output.split_lines), it.exists_file)
+
+  dest.remove_dir
+  for path in paths:
+    cp(path, dest/path)
+  write_file(dest/sybil_witness, "dominator")
+
+
+proc build_vagrant*(vagrant_dir, remote_shell_commands: string) =
+  ## Powers up the vagrant box in the specified dir to run some commands.
+  ##
+  ## Use this to run system commands to build the binaries in the vagrant
+  ## machine. The `remote_shell_commands` parameter is meant to be a string
+  ## that will be embedded inside a shell command, so you can run several
+  ## commands with ``&&``. Example:
+  ##
+  ## .. code-block:
+  ##   build_vagrant("dir", "nake test && nimble build && nake install")
+  ##
+  ## The commands will be run in the ``/vagrant/software`` directory, populated
+  ## previously by `copy_vagrant() <#copy_vagrant>`_.  After all work has done
+  ## the vagrant instance is halted. This doesn't do any provisioning, the
+  ## vagrant instances are meant to be prepared beforehand.
+  with_dir vagrant_dir:
+    dire_shell "vagrant up"
+    dire_shell("vagrant ssh -c '" &
+      "cd /vagrant/software && " & remote_shell_commands & " && " &
+      "echo done'")
+    dire_shell "vagrant halt"
+
+
+proc run_vagrant*(remote_shell_commands: string, dirs: seq[string] = nil) =
+  ## Takes care of running some shell commands in the specified vagrant dirs.
+  ##
+  ## Pass the directories where vagrant bootstrap files are to be copied. If
+  ## you pass nil, the proc will iterate over all the directories found under
+  ## `vagrant_linux_dir <#vagrant_linux_dir>`_. The `remote_shell_commands` is
+  ## the shell string to be run for each vm, see `build_vagrant()
+  ## <#build_vagrant>`_.
+  var dirs = dirs
+  if dirs.is_nil:
+    dirs = @[]
+    for kind, path in vagrant_linux_dir.walk_dir:
+      if kind == pcDir or kind == pcLinkToDir:
+        dirs.add(path)
+
+  for dir in dirs:
+    cp(vagrant_linux_dir/"bootstrap.sh", dir/"bootstrap.sh")
+    copy_vagrant dir
+    build_vagrant(dir, remote_shell_commands)
 
 
 export cd

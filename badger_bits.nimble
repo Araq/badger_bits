@@ -20,6 +20,7 @@ docs
 InstallFiles = """
 
 README.rst
+bb_nake.nim
 bb_os.nim
 bb_system.nim
 license.rst
