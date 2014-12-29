@@ -3,7 +3,8 @@
 ## Contains stuff `nakefiles <https://github.com/fowlmouth/nake>`_ code.
 
 import
-  nake, os, bb_system, osproc, parseopt, rdstdin, strutils, tables, sequtils
+  nake, os, bb_system, osproc, parseopt, rdstdin, strutils, tables, sequtils,
+  algorithm, md5
 
 
 type
@@ -18,6 +19,10 @@ const
   zip_exe* = "zip"
   software_dir* = "software"
   exec_options = {poStdErrToStdOut, poUsePath, poEchoCmd}
+
+
+var compiler* = "nim".find_exe
+if compiler.len < 1: compiler = "nimrod".find_exe
 
 
 template glob*(pattern: string): expr =
@@ -161,6 +166,94 @@ proc collect_vagrant_dist*() =
       let vagrant_dist = vagrant_dir/software_dir/dist_dir
       for path in glob(vagrant_dist/"*"):
         cp(path, dist_dir/path.extract_filename)
+
+
+proc switch_to_gh_pages*() =
+  ## Forces changing git branch to gh-pages and running gh_nimrod_doc_pages.
+  ##
+  ## **This is a potentially destructive action!**
+  echo "Changing branches to render gh-pages…"
+  let ourselves = read_file("nakefile")
+  dire_shell "git checkout gh-pages"
+  # Keep ingored files http://stackoverflow.com/a/3801554/172690.
+  shell "rm -Rf `git ls-files --others --exclude-standard`"
+  shell "rm -Rf gh_docs"
+  dire_shell "gh_nimrod_doc_pages -c ."
+  write_file("nakefile", ourselves)
+  write_file(sybil_witness, "dominator")
+  dire_shell "chmod 775 nakefile"
+  echo "All commands run, now check the output and commit to git."
+  shell "open index.html"
+  echo "Wen you are done come back with './nakefile postweb'."
+
+
+proc switch_back_from_gh_pages*() =
+  ## Counterpart of `switch_to_gh_pages <#switch_to_gh_pages>`_.
+  echo "Forcing changes back to master."
+  dire_shell "git checkout -f @{-1}"
+  echo "Updating submodules just in case."
+  dire_shell "git submodule update"
+  remove_dir("gh_docs")
+
+
+proc show_md5_for_github*(templ: string) =
+  ## Computes md5 for files in `dist_dir <#dist_dir>`_.
+  ##
+  ## The output will be displayed in a markdown template which includes the
+  ## current git commit hash. To obtain the nimrod commit a ``git`` command is
+  ## run in the parent ``root`` directory, which should point to the current
+  ## compiler checkout. The following positional strings can be used in
+  ## `templ`:
+  ##
+  ## * nimrod git commit (if possible).
+  assert templ.not_nil
+  var git_commit = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  let (output, code) = execCmdEx("cd ../root && git log -n 1 --format=%H")
+  if code == 0 and output.strip.len == 40:
+    git_commit = output.strip
+  echo templ % [git_commit]
+
+  var files = to_seq(walk_files(dist_dir/"*.zip"))
+  files.sort(system.cmp)
+  for filename in files:
+    let v = filename.read_file.get_md5
+    echo "* ``", v, "`` ", filename.extract_filename
+
+
+proc run_test_subdirectories*(test_dir: string) =
+  ## Compiles and runs files in the specified test directory.
+  ##
+  ## Inside the `test_dir` you need to have separate directories for each test,
+  ## and each of these directories has to have a ``test*.nimrod.cfg`` file,
+  ## which will be used to compile and run the test. If any of the tests fails
+  ## this proc will quit.
+  var failed: seq[string] = @[]
+  # Run the test suite.
+  for test_file in walk_files("tests/*/test_*.nimrod.cfg"):
+    let
+      name1 = test_file.split_file.name.change_file_ext("")
+      name2 = name1.change_file_ext("nim")
+      dir = test_file.parent_dir
+
+    if not exists_file(dir/name2):
+      echo "Not found ", dir/name2
+      continue
+
+    with_dir test_file.parent_dir:
+      try:
+        echo "Testing ", name2
+        #test_shell(compiler, " c --noBabelPath -r ", name2)
+        test_shell(compiler, " c -r ", name2)
+      except Shell_failure:
+        failed.add(test_file)
+
+  # Show results
+  if failed.len > 0:
+    echo "Uh oh, " & $failed.len & " tests failed running"
+    for f in failed: echo "\t" & f
+    quit(QuitFailure)
+  else:
+    echo "All tests run without errors."
 
 
 export cd
