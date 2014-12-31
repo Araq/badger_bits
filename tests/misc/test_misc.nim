@@ -142,7 +142,7 @@ proc test_cp() =
   dist_dir.create_dir
 
   let dest_nim = dist_dir/"file"
-  cp("tests.nim", dest_nim)
+  cp("test_misc.nim", dest_nim)
   do_assert dest_nim.exists_file
 
   dist_dir.remove_dir
@@ -168,6 +168,5 @@ proc test() =
   echo "All tests run"
 
 
+task default_task, "Runs tests by default": test()
 when isMainModule: test()
-
-task "dummy", "Required for nake import to work": test()

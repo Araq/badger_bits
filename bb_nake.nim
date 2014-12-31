@@ -261,6 +261,7 @@ export defaultTask
 export direShell
 export listTasks
 export needsRefresh
+export nimExe
 export os
 export parseopt
 export rdstdin

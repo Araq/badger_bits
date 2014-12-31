@@ -1,5 +1,5 @@
 import
-  nake, lazy_rest, bb_system, sequtils, osproc
+  bb_nake, lazy_rest, bb_system, sequtils, osproc
 
 
 type
@@ -112,11 +112,7 @@ proc install_nimble() =
 
 
 proc run_tests() =
-  with_dir "tests":
-    test_shell(nim_exe, "c -r tests")
-    test_shell(nim_exe, "c -d:release -r tests")
-
-  echo "All tests run without errors."
+  run_test_subdirectories("tests")
 
 
 proc web() =
