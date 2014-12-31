@@ -61,8 +61,9 @@ Git branches
 
 This project uses the `git-flow branching model
 <https://github.com/nvie/gitflow>`_ with reversed defaults. Stable releases are
-tracked in the ``stable`` branch. Development happens in the default ``master``
-branch.
+tracked in the `stable <https://github.com/gradha/badger_bits/tree/stable>`_
+branch. Development happens in the default `master
+<https://github.com/gradha/badger_bits/tree/master>`_ branch.
 
 
 Feedback
