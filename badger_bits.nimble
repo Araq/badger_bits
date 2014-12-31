@@ -27,3 +27,10 @@ license.rst
 nakefile.nim
 
 """
+
+[Deps]
+Requires: """
+
+nake >= 1.4
+
+"""
