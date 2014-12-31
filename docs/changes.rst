@@ -9,7 +9,8 @@ This is the changes log for the `badger_bits module
 v0.2.1, ????-??-??
 ------------------
 
-* Nothing yet.
+* `Added custom nake module with linux vagrant helpers
+  <https://github.com/gradha/badger_bits/issues/3>`_.
 
 v0.2.0, 2014-12-10
 ------------------
