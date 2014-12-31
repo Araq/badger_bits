@@ -11,6 +11,8 @@ v0.2.1, ????-??-??
 
 * `Added custom nake module with linux vagrant helpers
   <https://github.com/gradha/badger_bits/issues/3>`_.
+* `Added support for nim 0.10.2
+  <https://github.com/gradha/badger_bits/issues/5>`_.
 
 v0.2.0, 2014-12-10
 ------------------
