@@ -200,12 +200,12 @@ proc show_md5_for_github*(templ: string) =
   ## Computes md5 for files in `dist_dir <#dist_dir>`_.
   ##
   ## The output will be displayed in a markdown template which includes the
-  ## current git commit hash. To obtain the nimrod commit a ``git`` command is
+  ## current git commit hash. To obtain the nim commit a ``git`` command is
   ## run in the parent ``root`` directory, which should point to the current
   ## compiler checkout. The following positional strings can be used in
   ## `templ`:
   ##
-  ## * nimrod git commit (if possible).
+  ## * nim git commit (if possible).
   assert templ.not_nil
   var git_commit = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   let (output, code) = execCmdEx("cd ../root && git log -n 1 --format=%H")

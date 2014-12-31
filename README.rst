@@ -3,10 +3,10 @@ Badger bits readme
 ==================
 
 This module contains `gradha's <https://github.com/gradha>`_ tweaks and
-shortcuts for the `Nimrod programming language <http://nimrod-lang.org>`_.  You
-can read pre generated documentation at http://gradha.github.io/badger_bits/.
-You can also generate this documentation locally typing ``nake doc`` once you
-have the software on your machine.
+shortcuts for the `Nim programming language <http://nim-lang.org>`_.  You can
+read pre generated documentation at http://gradha.github.io/badger_bits/.  You
+can also generate this documentation locally typing ``nake doc`` once you have
+the software on your machine.
 
 
 Changes
@@ -28,9 +28,9 @@ Installation
 Development version
 -------------------
 
-Install the `Nimrod compiler <http://nimrod-lang.org>`_. Then use `Nimrod's
-Nimble package manager <https://github.com/nim-lang/nimble>`_ to install
-locally the GitHub checkout::
+Install the `Nim compiler <http://nim-lang.org>`_. Then use `Nim's Nimble
+package manager <https://github.com/nim-lang/nimble>`_ to install locally the
+GitHub checkout::
 
     $ git clone https://github.com/gradha/badger_bits.git
     $ cd badger_bits
@@ -70,5 +70,5 @@ Feedback
 
 You can send me feedback through `GitHub's issue tracker
 <https://github.com/gradha/badger_bits/issues>`_. I also take a look from time
-to time to `Nimrod's forums <http://forum.nimrod-lang.org>`_ where you can talk
-to other nimrod programmers.
+to time to `Nim's forums <http://forum.nim-lang.org>`_ where you can talk to
+other Nim programmers.
