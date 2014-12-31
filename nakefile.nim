@@ -52,7 +52,7 @@ proc rst_to_html(src, dest: string): bool =
   ## Generates an HTML file from `src` into `dest`.
   if not dest.needs_refresh(src): return
   echo src & " -> " & dest
-  test_shell("nimrod rst2html --verbosity:0", src)
+  test_shell(nim_exe, "rst2html --verbosity:0", src)
   result = true
 
 
@@ -79,7 +79,7 @@ proc doc(start_dir = ".", open_files = false) =
       base_dir = full_path.split_file.dir
     base_dir.create_dir
     if not full_path.needs_refresh(nim_file): continue
-    if not shell("nimrod doc --verbosity:0 -o:" & full_path, nim_file):
+    if not shell(nim_exe, "doc --verbosity:0 -o:" & full_path, nim_file):
       quit("Could not generate HTML API doc for " & nim_file)
     if open_files: shell("open " & full_path)
 
@@ -113,8 +113,8 @@ proc install_nimble() =
 
 proc run_tests() =
   with_dir "tests":
-    test_shell("nimrod c -r tests")
-    test_shell("nimrod c -d:release -r tests")
+    test_shell(nim_exe, "c -r tests")
+    test_shell(nim_exe, "c -d:release -r tests")
 
   echo "All tests run without errors."
 

@@ -4,7 +4,7 @@ version = "0.2.1"
 author = "Grzegorz Adam Hankiewicz"
 license = "MIT"
 description = """
-Tweaks and shortcuts for the Nimrod programming language.
+Tweaks and shortcuts for the Nim programming language.
 
 Not good enough to make it to the standard library.
 
@@ -25,5 +25,12 @@ bb_os.nim
 bb_system.nim
 license.rst
 nakefile.nim
+
+"""
+
+[Deps]
+Requires: """
+
+nake >= 1.4
 
 """
