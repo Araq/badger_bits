@@ -100,7 +100,7 @@ proc validate_doc() =
 proc clean() =
   for path in walk_dir_rec("."):
     let ext = splitFile(path).ext
-    if ext == ".html":
+    if ext == ".html" or ext == ".idx" or ext == ".exe":
       echo "Removing ", path
       path.removeFile()
   echo "Temporary files cleaned"

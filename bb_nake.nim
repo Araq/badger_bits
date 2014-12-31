@@ -19,10 +19,7 @@ const
   zip_exe* = "zip"
   software_dir* = "software"
   exec_options = {poStdErrToStdOut, poUsePath, poEchoCmd}
-
-
-var compiler* = "nim".find_exe
-if compiler.len < 1: compiler = "nimrod".find_exe
+  nimcache_dir* = "nimcache"
 
 
 template glob*(pattern: string): expr =
@@ -227,7 +224,9 @@ proc run_test_subdirectories*(test_dir: string) =
   ## and each of these directories has to have a ``test*.nimrod.cfg`` file,
   ## which will be used to compile and run the test. If any of the tests fails
   ## this proc will quit.
-  var failed: seq[string] = @[]
+  var failed: tuple[debug, release: seq[string]]
+  failed.debug = @[]
+  failed.release = @[]
   # Run the test suite.
   for test_file in walk_files("tests/*/test_*.nimrod.cfg"):
     let
@@ -241,16 +240,24 @@ proc run_test_subdirectories*(test_dir: string) =
 
     with_dir test_file.parent_dir:
       try:
-        echo "Testing ", name2
-        #test_shell(compiler, " c --noBabelPath -r ", name2)
-        test_shell(compiler, " c -r ", name2)
+        nimcache_dir.remove_dir
+        echo "Testing ", name2, " in debug mode"
+        #test_shell(nim_exe, " c --noBabelPath -r ", name2)
+        test_shell(nim_exe, " c -d:debug -r ", name2)
       except Shell_failure:
-        failed.add(test_file)
+        failed.debug.add(test_file)
+      try:
+        nimcache_dir.remove_dir
+        echo "Testing ", name2, " in release mode"
+        test_shell(nim_exe, " c -d:release -r ", name2)
+      except Shell_failure:
+        failed.release.add(test_file)
 
   # Show results
-  if failed.len > 0:
-    echo "Uh oh, " & $failed.len & " tests failed running"
-    for f in failed: echo "\t" & f
+  if failed.debug.len > 0 or failed.release.len > 0:
+    echo "Uh oh, " & $(failed.debug.len + failed.release.len) & " tests failed"
+    for f in failed.debug: echo "\tdebug " & f
+    for f in failed.release: echo "\trelease " & f
     quit(QuitFailure)
   else:
     echo "All tests run without errors."
