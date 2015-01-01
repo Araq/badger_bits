@@ -81,6 +81,7 @@ proc doc(start_dir = ".", open_files = false) =
     if not full_path.needs_refresh(nim_file): continue
     if not shell(nim_exe, "doc --verbosity:0 -o:" & full_path, nim_file):
       quit("Could not generate HTML API doc for " & nim_file)
+    echo full_path
     if open_files: shell("open " & full_path)
 
   echo "All docs generated"

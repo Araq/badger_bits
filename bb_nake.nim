@@ -1,6 +1,6 @@
 ## `Badger bits <https://github.com/gradha/badger_bits>`_ nake helpers.
 ##
-## Contains stuff `nakefiles <https://github.com/fowlmouth/nake>`_ code.
+## Contains common `nake <https://github.com/fowlmouth/nake>`_ helpers.
 
 import
   nake, os, bb_system, osproc, parseopt, rdstdin, strutils, tables, sequtils,
@@ -10,25 +10,35 @@ import
 type
   Shell_failure* = object of EAssertionFailed ## \
     ## Indicates something failed, with error output if `errors` is not nil.
+    ##
+    ## Raised by `test_shell() <#test_shell>`_.
     errors*: string
 
 const
-  sybil_witness* = ".sybil_systems"
-  dist_dir* = "dist"
-  vagrant_linux_dir* = "vagrant_linux"
-  zip_exe* = "zip"
-  software_dir* = "software"
+  sybil_witness* = ".sybil_systems" ## \
+  ## Special witness filename used sometimes to hide nake developer commands.
+  dist_dir* = "dist" ## \
+  ## Directory where final binaries are placed for collection.
+  vagrant_linux_dir* = "vagrant_linux" ## \
+  ## Directory were vagrant configuration files and vm instances are stored.
+  zip_exe* = "zip" ## \
+  ## Name of the platform specific command used to create zip files.
+  software_dir* = "software" ## \
+  ## Name of the directory used to communicate with vagrant instances.
   exec_options = {poStdErrToStdOut, poUsePath, poEchoCmd}
-  nimcache_dir* = "nimcache"
+  nimcache_dir* = "nimcache" ## \
+  ## Name of the nimcache directory.
 
 
 template glob*(pattern: string): expr =
-  ## Familiar shortcut to simplify getting lists of files.
+  ## Familiar `os.walkFiles() <http://nim-lang.org/os.html#walkFiles>`_ shortcut
+  ## to simplify getting lists of files.
   to_seq(walk_files(pattern))
 
 
 proc cp*(src, dest: string) =
-  ## Verbose wrapper around copy_file_with_permissions.
+  ## Verbose wrapper around `os.copyFileWithPermissions()
+  ## <http://nim-lang.org/os.html#copyFileWithPermissions>`_.
   ##
   ## In addition to copying permissions this will create necessary destination
   ## directories. If `src` is a directory it will be copied recursively.
@@ -46,7 +56,8 @@ proc cp*(src, dest: string) =
 
 
 proc test_shell*(cmd: varargs[string, `$`]): bool {.discardable.} =
-  ## Like dire_shell() but doesn't quit, rather raises `Shell_failure
+  ## Like nake's ``direShell()`` but doesn't `system.quit()
+  ## <http://nim-lang.org/system.html#quit>`_, instead raises `Shell_failure
   ## <#Shell_failure>`_.
   let
     full_command = cmd.join(" ")
@@ -59,7 +70,7 @@ proc test_shell*(cmd: varargs[string, `$`]): bool {.discardable.} =
 
 
 proc copy_vagrant*(dest: string) =
-  ## Copies the current git files to `dest`/``software_dir``.
+  ## Copies the current git files to `dest`/`software_dir <#software_dir>`_.
   ##
   ## The files to copy are found out with ``git ls-files -c``. The
   ## `sybil_witness <#sybil_witness>`_ witness will be created at `dest`.
@@ -94,10 +105,11 @@ proc build_vagrant*(vagrant_dir, remote_shell_commands: string) =
   ##     nimble build
   ##     nake install""")
   ##
-  ## The commands will be run in the ``/vagrant/software_dir`` directory,
-  ## populated previously by `copy_vagrant() <#copy_vagrant>`_.  After all work
-  ## has done the vagrant instance is halted. This doesn't do any provisioning,
-  ## the vagrant instances are meant to be prepared beforehand.
+  ## The commands will be run in the ``/vagrant``/`software_dir
+  ## <#software_dir>`_ directory, populated previously by `copy_vagrant()
+  ## <#copy_vagrant>`_.  After all work has done the vagrant instance is
+  ## halted. This doesn't do any provisioning, the vagrant instances are meant
+  ## to be prepared beforehand.
   var commands = remote_shell_commands
   if commands.find(NewLines) >= 0:
     # Split into lines, strip and merge with ampersands.
@@ -154,9 +166,10 @@ proc pack_dir*(zip_dir: string, do_remove = true) =
 
 
 proc collect_vagrant_dist*() =
-  ## Takes dist generated files from vagrant dirs and copies to our dist.
+  ## Takes dist generated files from vagrant dirs and copies to our `dist_dir
+  ## <#dist_dir>`_.
   ##
-  ## This requires that both vagrant and current dist dirs exists.
+  ## This requires that both vagrant' and current dist_dirs exists.
   doAssert dist_dir.exists_dir
   for kind, vagrant_dir in vagrant_linux_dir.walk_dir:
     if kind == pcDir or kind == pcLinkToDir:
@@ -166,7 +179,8 @@ proc collect_vagrant_dist*() =
 
 
 proc switch_to_gh_pages*() =
-  ## Forces changing git branch to gh-pages and running gh_nimrod_doc_pages.
+  ## Forces changing git branch to ``gh-pages`` and running
+  ## ``gh_nimrod_doc_pages``.
   ##
   ## **This is a potentially destructive action!**
   echo "Changing branches to render gh-pages…"
@@ -194,7 +208,8 @@ proc switch_back_from_gh_pages*() =
 
 
 proc show_md5_for_github*(templ: string) =
-  ## Computes md5 for files in `dist_dir <#dist_dir>`_.
+  ## Computes `md5 <http://nim-lang.org/md5.html>`_ for files in `dist_dir
+  ## <#dist_dir>`_.
   ##
   ## The output will be displayed in a markdown template which includes the
   ## current git commit hash. To obtain the nim commit a ``git`` command is
