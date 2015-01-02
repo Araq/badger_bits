@@ -1,6 +1,6 @@
 [Package]
 name = "badger_bits"
-version = "0.2.1"
+version = "0.2.2"
 author = "Grzegorz Adam Hankiewicz"
 license = "MIT"
 description = """
