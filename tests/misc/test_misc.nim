@@ -39,43 +39,6 @@ proc test_dot_walk_dir_rec() =
   do_assert l != @good_result
 
 
-proc test_exceptions() =
-  proc badIO() =
-    raise newException(EIO, "Bad IO")
-
-  proc badMath() =
-    raise newException(EArithmetic, "Bad addition")
-
-  try:
-    badMath()
-  except:
-    evar m, EArithmetic
-    evar i, EIO
-    echo "auto: Is arithmetic? ", (not m.isNil)
-    echo "auto: Is IO? ", (not i.isNil)
-    do_assert m.not_nil
-    do_assert i.is_nil
-
-  try:
-    badIO()
-  except EIO:
-    elet EIO
-    echo "auto: ", type(e), " ", e.msg
-
-  try:
-    badIO()
-  except EIO:
-    evar e, EArithmetic
-    echo "auto: ", type(e)
-
-  try:
-    badIO()
-  except EIO, EArithmetic:
-    evar e, EIO
-    echo "auto: ", type(e)
-
-  echo "auto: finished"
-
 proc test_safe_object() =
   type Node = ref object
     child: Node
@@ -159,7 +122,6 @@ proc test_shell() =
 proc test() =
   test_not_nil()
   test_dot_walk_dir_rec()
-  test_exceptions()
   test_safe_object()
   test_safe_string()
   test_safe_seq()
