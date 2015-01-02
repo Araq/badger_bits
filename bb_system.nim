@@ -145,46 +145,6 @@ proc `$`*[T](some:typedesc[T]): string =
   name(T)
 
 
-template elet*(t: typedesc): stmt =
-  ## Captures the current exception into a typed variable.
-  ##
-  ## The ``elet`` template injects the variable `e` with the type `ref t`. The
-  ## injected `e` variable is guaranteed to be not nil. If the type `t` is not
-  ## valid, the exception EInvalidObjectConversion will be raised. Usage
-  ## example:
-  ##
-  ## .. code-block::
-  ##   try:
-  ##     badIO()
-  ##   except EIO:
-  ##     elet EIO
-  ##     echo "Got bad IO: ", e.msg
-
-  let e {.inject.}: ref t = (ref t)getCurrentException()
-  doAssert(not e.isNil, "getCurrentException() called out of except block!")
-
-
-template evar*(x: expr, t: typedesc): stmt =
-  ## Attempts to capture the current exception into a typed variable.
-  ##
-  ## The ``evar`` template injects the specified variable name `x` with the
-  ## type `ref t`. The injected variable may be nil if there is no current
-  ## exception or the type is incorrect. You can use this as a special case
-  ## inside generic ``except`` branches. Example:
-  ##
-  ## .. code-block::
-  ##   try:
-  ##     badMath()
-  ##   except:
-  ##     evar m, EArithmetic
-  ##     evar i, EIO
-  ##     echo "auto: Is arithmetic? ", (not m.isNil)
-  ##     echo "auto: Is IO? ", (not i.isNil)
-  var x: ref t = nil
-  try: x = (ref t)getCurrentException()
-  except EInvalidObjectConversion: discard
-
-
 template rassert*(cond: bool, msg: string, body: stmt) {.immediate.} =
   ## Mix between assertion in debug mode and normal ``if`` at runtime.
   ##

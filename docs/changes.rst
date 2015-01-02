@@ -13,6 +13,8 @@ v0.2.1, ????-??-??
   <https://github.com/gradha/badger_bits/issues/3>`_.
 * `Added support for nim 0.10.2
   <https://github.com/gradha/badger_bits/issues/5>`_.
+* `Removed evar/elet templates
+  <https://github.com/gradha/badger_bits/issues/7>`_.
 
 v0.2.0, 2014-12-10
 ------------------
