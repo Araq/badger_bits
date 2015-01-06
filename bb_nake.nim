@@ -220,7 +220,7 @@ proc show_md5_for_github*(templ: string) =
   ## * nim git commit (if possible).
   assert templ.not_nil
   var git_commit = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  let (output, code) = execCmdEx("cd ../root && git log -n 1 --format=%H")
+  let (output, code) = exec_cmd_ex("cd ../root && git log -n 1 --format=%H")
   if code == 0 and output.strip.len == 40:
     git_commit = output.strip
   echo templ % [git_commit]
@@ -232,6 +232,28 @@ proc show_md5_for_github*(templ: string) =
     echo "* ``", v, "`` ", filename.extract_filename
 
 
+proc warn_babel_package() =
+  ## Attempts to detect a babel package installed, to warn about conflicts.
+  let files = concat(glob("*.nimble"), glob("*.babel"))
+  if files.len != 1:
+    if files.len > 1:
+      echo "Warning, too maby `spec` files?"
+    return
+
+  let name = files[0].change_file_ext("")
+  echo "Detected nimble package '", name, "'"
+  let (output, code) = exec_cmd_ex("nimble path " & name)
+  if code != 0:
+    echo "Warning, ``nimble path " & name & "`` returned non zero!"
+    return
+
+  for raw_line in output.split_lines:
+    let dir = raw_line.strip
+    if dir.exists_dir:
+      echo "Warning, package installed at ", dir
+      echo "This could affect test results…"
+
+
 proc run_test_subdirectories*(test_dir: string) =
   ## Compiles and runs files in the specified test directory.
   ##
@@ -239,6 +261,8 @@ proc run_test_subdirectories*(test_dir: string) =
   ## and each of these directories has to have a ``test*.nimrod.cfg`` file,
   ## which will be used to compile and run the test. If any of the tests fails
   ## this proc will quit.
+  warn_babel_package()
+
   var failed: tuple[debug, release: seq[string]]
   failed.debug = @[]
   failed.release = @[]
