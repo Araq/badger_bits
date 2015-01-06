@@ -243,7 +243,7 @@ proc run_test_subdirectories*(test_dir: string) =
   failed.debug = @[]
   failed.release = @[]
   # Run the test suite.
-  for test_file in walk_files("tests/*/test_*.nimrod.cfg"):
+  for test_file in walk_files(test_dir/"*/test_*.nimrod.cfg"):
     let
       name1 = test_file.split_file.name.change_file_ext("")
       name2 = name1.change_file_ext("nim")
