@@ -9,7 +9,8 @@ This is the changes log for the `badger_bits module
 v0.2.3, ????-??-??
 ------------------
 
-* Nothing yet.
+* `Uses copy_dir_with_permissions() in bb_nake
+  <https://github.com/gradha/badger_bits/issues/10>`_.
 
 v0.2.2, 2015-01-03
 ------------------

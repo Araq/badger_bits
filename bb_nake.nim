@@ -50,7 +50,7 @@ proc cp*(src, dest: string) =
     base_dir.create_dir
 
   if src.exists_dir:
-    src.copy_dir(dest)
+    src.copy_dir_with_permissions(dest)
   else:
     src.copy_file_with_permissions(dest)
 
