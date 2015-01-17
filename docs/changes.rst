@@ -11,6 +11,8 @@ v0.2.3, ????-??-??
 
 * `Uses copy_dir_with_permissions() in bb_nake
   <https://github.com/gradha/badger_bits/issues/10>`_.
+* `Added ini parameter to switch_to_gh_pages()
+  <https://github.com/gradha/badger_bits/issues/11>`_.
 
 v0.2.2, 2015-01-03
 ------------------
