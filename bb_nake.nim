@@ -50,7 +50,7 @@ proc cp*(src, dest: string) =
     base_dir.create_dir
 
   if src.exists_dir:
-    src.copy_dir(dest)
+    src.copy_dir_with_permissions(dest)
   else:
     src.copy_file_with_permissions(dest)
 
@@ -178,18 +178,21 @@ proc collect_vagrant_dist*() =
         cp(path, dist_dir/path.extract_filename)
 
 
-proc switch_to_gh_pages*() =
+proc switch_to_gh_pages*(ini_path_or_dir = ".") =
   ## Forces changing git branch to ``gh-pages`` and running
   ## ``gh_nimrod_doc_pages``.
   ##
-  ## **This is a potentially destructive action!**
+  ## **This is a potentially destructive action!**. Pass the directory where
+  ## the ``gh_nimrod_doc_pages.ini`` file lives, or the path to the specific
+  ## file if you renamed it.
+  assert ini_path_or_dir.not_nil
   echo "Changing branches to render gh-pages…"
   let ourselves = read_file("nakefile")
   dire_shell "git checkout gh-pages"
   # Keep ingored files http://stackoverflow.com/a/3801554/172690.
   shell "rm -Rf `git ls-files --others --exclude-standard`"
   shell "rm -Rf gh_docs"
-  dire_shell "gh_nimrod_doc_pages -c ."
+  dire_shell "gh_nimrod_doc_pages -c " & ini_path_or_dir
   write_file("nakefile", ourselves)
   write_file(sybil_witness, "dominator")
   dire_shell "chmod 775 nakefile"
@@ -220,7 +223,7 @@ proc show_md5_for_github*(templ: string) =
   ## * nim git commit (if possible).
   assert templ.not_nil
   var git_commit = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  let (output, code) = execCmdEx("cd ../root && git log -n 1 --format=%H")
+  let (output, code) = exec_cmd_ex("cd ../root && git log -n 1 --format=%H")
   if code == 0 and output.strip.len == 40:
     git_commit = output.strip
   echo templ % [git_commit]
@@ -232,6 +235,28 @@ proc show_md5_for_github*(templ: string) =
     echo "* ``", v, "`` ", filename.extract_filename
 
 
+proc warn_babel_package() =
+  ## Attempts to detect a babel package installed, to warn about conflicts.
+  let files = concat(glob("*.nimble"), glob("*.babel"))
+  if files.len != 1:
+    if files.len > 1:
+      echo "Warning, too maby `spec` files?"
+    return
+
+  let name = files[0].change_file_ext("")
+  echo "Detected nimble package '", name, "'"
+  let (output, code) = exec_cmd_ex("nimble path " & name)
+  if code != 0:
+    echo "Warning, ``nimble path " & name & "`` returned non zero!"
+    return
+
+  for raw_line in output.split_lines:
+    let dir = raw_line.strip
+    if dir.exists_dir:
+      echo "Warning, package installed at ", dir
+      echo "This could affect test results…"
+
+
 proc run_test_subdirectories*(test_dir: string) =
   ## Compiles and runs files in the specified test directory.
   ##
@@ -239,11 +264,13 @@ proc run_test_subdirectories*(test_dir: string) =
   ## and each of these directories has to have a ``test*.nimrod.cfg`` file,
   ## which will be used to compile and run the test. If any of the tests fails
   ## this proc will quit.
+  warn_babel_package()
+
   var failed: tuple[debug, release: seq[string]]
   failed.debug = @[]
   failed.release = @[]
   # Run the test suite.
-  for test_file in walk_files("tests/*/test_*.nimrod.cfg"):
+  for test_file in walk_files(test_dir/"*/test_*.nimrod.cfg"):
     let
       name1 = test_file.split_file.name.change_file_ext("")
       name2 = name1.change_file_ext("nim")
