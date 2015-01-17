@@ -178,18 +178,21 @@ proc collect_vagrant_dist*() =
         cp(path, dist_dir/path.extract_filename)
 
 
-proc switch_to_gh_pages*() =
+proc switch_to_gh_pages*(ini_path_or_dir = ".") =
   ## Forces changing git branch to ``gh-pages`` and running
   ## ``gh_nimrod_doc_pages``.
   ##
-  ## **This is a potentially destructive action!**
+  ## **This is a potentially destructive action!**. Pass the directory where
+  ## the ``gh_nimrod_doc_pages.ini`` file lives, or the path to the specific
+  ## file if you renamed it.
+  assert ini_path_or_dir.not_nil
   echo "Changing branches to render gh-pages…"
   let ourselves = read_file("nakefile")
   dire_shell "git checkout gh-pages"
   # Keep ingored files http://stackoverflow.com/a/3801554/172690.
   shell "rm -Rf `git ls-files --others --exclude-standard`"
   shell "rm -Rf gh_docs"
-  dire_shell "gh_nimrod_doc_pages -c ."
+  dire_shell "gh_nimrod_doc_pages -c " & ini_path_or_dir
   write_file("nakefile", ourselves)
   write_file(sybil_witness, "dominator")
   dire_shell "chmod 775 nakefile"
