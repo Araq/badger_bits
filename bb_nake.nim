@@ -142,7 +142,8 @@ proc run_vagrant*(remote_shell_commands: string, dirs: seq[string] = nil) =
         dirs.add(path)
 
   for dir in dirs:
-    cp(vagrant_linux_dir/"bootstrap.sh", dir/"bootstrap.sh")
+    let boot_file = vagrant_linux_dir/"bootstrap.sh"
+    if boot_file.exists_file: boot_file.cp(dir/extract_filename(boot_file))
     copy_vagrant dir
     build_vagrant(dir, remote_shell_commands)
 
