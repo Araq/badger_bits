@@ -138,8 +138,9 @@ proc run_vagrant*(remote_shell_commands: string, dirs: seq[string] = nil) =
   if dirs.is_nil:
     dirs = @[]
     for kind, path in vagrant_linux_dir.walk_dir:
-      if kind == pcDir or kind == pcLinkToDir:
-        dirs.add(path)
+      if kind == pcFile:
+        continue
+      dirs.add(path)
 
   for dir in dirs:
     let boot_file = vagrant_linux_dir/"bootstrap.sh"
