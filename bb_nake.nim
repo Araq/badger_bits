@@ -174,10 +174,12 @@ proc collect_vagrant_dist*() =
   ## This requires that both vagrant' and current dist_dirs exists.
   doAssert dist_dir.exists_dir
   for kind, vagrant_dir in vagrant_linux_dir.walk_dir:
-    if kind == pcDir or kind == pcLinkToDir:
-      let vagrant_dist = vagrant_dir/software_dir/dist_dir
-      for path in glob(vagrant_dist/"*"):
-        cp(path, dist_dir/path.extract_filename)
+    if kind == pcFile:
+      continue
+
+    let vagrant_dist = vagrant_dir/software_dir/dist_dir
+    for path in glob(vagrant_dist/"*"):
+      cp(path, dist_dir/path.extract_filename)
 
 
 proc switch_to_gh_pages*(ini_path_or_dir = ".") =
