@@ -9,7 +9,8 @@ This is the changes log for the `badger_bits module
 v0.2.5, ????-??-??
 ------------------
 
-* Nothing yet.
+* `Loosened vagrant copying of bootstrap file
+  <https://github.com/gradha/badger_bits/issues/13>`_.
 
 v0.2.4, 2015-01-17
 ------------------
