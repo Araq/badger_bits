@@ -301,12 +301,13 @@ proc run_test_subdirectories*(test_dir: string) =
 
   # Show results
   if failed.debug.len > 0 or failed.release.len > 0:
-    echo "Uh oh, " & $(failed.debug.len + failed.release.len) & " tests failed"
+    echo "Uh oh, " & $(failed.debug.len + failed.release.len) &
+      " tests failed for '" & test_dir & "'"
     for f in failed.debug: echo "\tdebug " & f
     for f in failed.release: echo "\trelease " & f
     quit(QuitFailure)
   else:
-    echo "All tests run without errors."
+    echo "All tests in '", test_dir, "' run without errors."
 
 
 export cd
