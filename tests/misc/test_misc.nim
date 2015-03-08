@@ -29,14 +29,14 @@ proc test_dot_walk_dir_rec() =
       "dot_walk_dir_rec/valid_dir/a",
       "dot_walk_dir_rec/valid_dir/b"]
 
-  var l = to_seq(dir.dot_walk_dir_rec)
-  l.sort(system.cmp)
-  do_assert l == @good_result
-  do_assert l != @bad_result
-  l = to_seq(dir.walk_dir_rec)
-  l.sort(system.cmp)
-  do_assert l == @bad_result
-  do_assert l != @good_result
+  var list = to_seq(dir.dot_walk_dir_rec)
+  list.sort(system.cmp)
+  do_assert list == @good_result
+  do_assert list != @bad_result
+  list = to_seq(dir.walk_dir_rec)
+  list.sort(system.cmp)
+  do_assert list == @bad_result
+  do_assert list != @good_result
 
 
 proc test_safe_object() =
@@ -75,7 +75,7 @@ proc test_safe_string() =
   try:
     a.doStuff
     quit "Hey, we meant to assert there"
-  except EAssertionFailed:
+  except AssertionError:
     echo "Tested assertion"
 
 proc test_safe_seq() =
@@ -96,7 +96,7 @@ proc test_safe_seq() =
   try:
     a.doStuff
     quit "Hey, we meant to assert there"
-  except EAssertionFailed:
+  except AssertionError:
     echo "Tested assertion"
 
 

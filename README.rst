@@ -61,15 +61,15 @@ Git branches
 
 This project uses the `git-flow branching model
 <https://github.com/nvie/gitflow>`_ with reversed defaults. Stable releases are
-tracked in the `stable <https://github.com/gradha/badger_bits/tree/stable>`_
-branch. Development happens in the default `master
-<https://github.com/gradha/badger_bits/tree/master>`_ branch.
+tracked in the `stable branch
+<https://github.com/gradha/badger_bits/tree/stable>`_. Development happens in
+the default `master branch
+<https://github.com/gradha/badger_bits/tree/master>`_.
 
 
 Feedback
 ========
 
 You can send me feedback through `GitHub's issue tracker
-<https://github.com/gradha/badger_bits/issues>`_. I also take a look from time
-to time to `Nim's forums <http://forum.nim-lang.org>`_ where you can talk to
-other Nim programmers.
+<https://github.com/gradha/badger_bits/issues>`_. You can also ask for generic
+Nim development help at `Nim's forums <http://forum.nim-lang.org>`_.

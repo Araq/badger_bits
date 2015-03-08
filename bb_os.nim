@@ -7,7 +7,7 @@ import os, strutils
 export os
 
 iterator dot_walk_dir_rec*(dir: string,
-    filter = {pcFile, pcDir}): string {.tags: [FReadDir].} =
+    filter = {pcFile, pcDir}): string {.tags: [ReadDirEffect].} =
   ## Version of os.walkDirRec which ignores items starting with a dot.
   ##
   ## Since a `fix <http://forum.nim-lang.org/t/514>`_ for `os.walkDirRec

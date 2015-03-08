@@ -3,12 +3,12 @@
 ## Contains common `nake <https://github.com/fowlmouth/nake>`_ helpers.
 
 import
-  nake, os, bb_system, osproc, parseopt, rdstdin, strutils, tables, sequtils,
+  nake, os, bb_system, osproc, parseopt2, rdstdin, strutils, tables, sequtils,
   algorithm, md5
 
 
 type
-  Shell_failure* = object of EAssertionFailed ## \
+  Shell_failure* = object of AssertionError ## \
     ## Indicates something failed, with error output if `errors` is not nil.
     ##
     ## Raised by `test_shell() <#test_shell>`_.
@@ -317,7 +317,7 @@ export listTasks
 export needsRefresh
 export nimExe
 export os
-export parseopt
+export parseopt2
 export rdstdin
 export runTask
 export shell

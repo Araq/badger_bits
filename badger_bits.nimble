@@ -32,5 +32,6 @@ nakefile.nim
 Requires: """
 
 nake >= 1.4
+nim >= 0.10.2
 
 """
