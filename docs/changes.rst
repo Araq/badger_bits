@@ -13,6 +13,8 @@ v0.2.5, ????-??-??
   <https://github.com/gradha/badger_bits/issues/13>`_.
 * `Fixes Nim 0.10.2 deprecation warnings
   <https://github.com/gradha/badger_bits/issues/9>`_.
+* `Added dot_walk_dir proc
+  <https://github.com/gradha/badger_bits/issues/16>`_.
 
 v0.2.4, 2015-01-17
 ------------------
