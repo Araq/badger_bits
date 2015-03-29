@@ -11,15 +11,15 @@ proc test_not_nil() =
   s = nil
 
 
-proc test_dot_walk_dir_rec() =
+proc test_dot_walks() =
   const
     dir = "dot_walk_dir_rec"
-    good_result = [
+    good_rec_result = [
       "dot_walk_dir_rec/this_also",
       "dot_walk_dir_rec/this_yes",
       "dot_walk_dir_rec/valid_dir/a",
       "dot_walk_dir_rec/valid_dir/b"]
-    bad_result = [
+    bad_rec_result = [
       "dot_walk_dir_rec/.ignore_dir/invisible",
       "dot_walk_dir_rec/.ignore_dir/maybe_not",
       "dot_walk_dir_rec/.ignore_this_file",
@@ -29,14 +29,38 @@ proc test_dot_walk_dir_rec() =
       "dot_walk_dir_rec/valid_dir/a",
       "dot_walk_dir_rec/valid_dir/b"]
 
+    good_result = [
+      "dot_walk_dir_rec/this_also",
+      "dot_walk_dir_rec/this_yes",
+      "dot_walk_dir_rec/valid_dir",
+      ]
+
+    bad_result = [
+      "dot_walk_dir_rec/.ignore_dir",
+      "dot_walk_dir_rec/.ignore_this_file",
+      "dot_walk_dir_rec/this_also",
+      "dot_walk_dir_rec/this_yes",
+      "dot_walk_dir_rec/valid_dir",
+      ]
+
   var list = to_seq(dir.dot_walk_dir_rec)
+  list.sort(system.cmp)
+  do_assert list == @good_rec_result
+  do_assert list != @bad_rec_result
+  list = to_seq(dir.walk_dir_rec)
+  list.sort(system.cmp)
+  do_assert list == @bad_rec_result
+  do_assert list != @good_rec_result
+
+  list = map_it(to_seq(dir.dot_walk_dir), string, it.path)
   list.sort(system.cmp)
   do_assert list == @good_result
   do_assert list != @bad_result
-  list = to_seq(dir.walk_dir_rec)
+
+  list = map_it(to_seq(dir.walk_dir), string, it.path)
   list.sort(system.cmp)
-  do_assert list == @bad_result
   do_assert list != @good_result
+  do_assert list == @bad_result
 
 
 proc test_safe_object() =
@@ -121,7 +145,7 @@ proc test_shell() =
 
 proc test() =
   test_not_nil()
-  test_dot_walk_dir_rec()
+  test_dot_walks()
   test_safe_object()
   test_safe_string()
   test_safe_seq()
