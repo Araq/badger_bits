@@ -265,16 +265,20 @@ proc run_test_subdirectories*(test_dir: string) =
   ## Compiles and runs files in the specified test directory.
   ##
   ## Inside the `test_dir` you need to have separate directories for each test,
-  ## and each of these directories has to have a ``test*.nimrod.cfg`` file,
-  ## which will be used to compile and run the test. If any of the tests fails
-  ## this proc will quit.
+  ## and each of these directories has to have a ``test*.nimrod.cfg`` or
+  ## ``test*.nim.cfg`` file, which will be used to compile and run the test. If
+  ## any of the tests fails this proc will quit.
   warn_babel_package()
 
   var failed: tuple[debug, release: seq[string]]
   failed.debug = @[]
   failed.release = @[]
+
+  var test_files = to_seq(walk_files(test_dir/"*/test_*.nimrod.cfg"))
+  test_files.add(to_seq(walk_files(test_dir/"*/test_*.nim.cfg")))
+
   # Run the test suite.
-  for test_file in walk_files(test_dir/"*/test_*.nimrod.cfg"):
+  for test_file in test_files:
     let
       name1 = test_file.split_file.name.change_file_ext("")
       name2 = name1.change_file_ext("nim")
@@ -313,6 +317,7 @@ proc run_test_subdirectories*(test_dir: string) =
 export cd
 export defaultTask
 export direShell
+export direSilentShell
 export listTasks
 export needsRefresh
 export nimExe
@@ -321,6 +326,7 @@ export parseopt2
 export rdstdin
 export runTask
 export shell
+export silentShell
 export strutils
 export tables
 export task
